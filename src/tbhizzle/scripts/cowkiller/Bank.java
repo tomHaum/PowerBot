@@ -43,7 +43,11 @@ public class Bank extends Task<ClientContext>{
 				}
 			}else{
 				System.out.println("not near bank");
+				
 				ctx.movement.step(bankTile);
+				/*
+				 if(path == null || path.
+				 */
 			}
 		}else{
 			System.out.println("empty");

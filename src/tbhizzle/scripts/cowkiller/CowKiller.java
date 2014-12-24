@@ -24,6 +24,7 @@ public class CowKiller extends PollingScript<ClientContext> implements PaintList
 		for(Task task: tasks){
 			if(task.activate()){
 				task.execute();
+				return;//so attack cows always comes before PickUpHides
 			}
 		}
 		
