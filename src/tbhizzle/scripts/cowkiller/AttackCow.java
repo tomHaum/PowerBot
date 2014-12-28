@@ -36,7 +36,7 @@ public class AttackCow extends Task<ClientContext>{
 		return 
 				ctx.backpack.select().count() < 28
 				&&
-				ctx.groundItems.select().name("Cowhide").count() < 3
+				ctx.groundItems.select().select(PickUpHides.hideFilter).count() < 3
 				&&
 				!(ctx.players.local().tile().distanceTo(cowTile) > 6);
 	}
@@ -56,7 +56,7 @@ public class AttackCow extends Task<ClientContext>{
 		ctx.camera.turnTo(cow, 10);
 		
 		System.out.println("Attacking");
-		cow.interact(false,"Attack", "Cow");
+		cow.interact("Attack", "Cow");
 		
 		Condition.wait(new Callable<Boolean>(){
 

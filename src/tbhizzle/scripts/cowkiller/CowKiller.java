@@ -16,7 +16,8 @@ import tbhizzle.util.Task;
 
 @Script.Manifest(name = "Cow Killer", description = "Kills cows and collects hides")
 public class CowKiller extends PollingScript<ClientContext> implements PaintListener{
-	Task[] tasks = {new AttackCow(ctx), new Bank(ctx), new PickUpHides(ctx)};
+	public static boolean banking;
+	Task[] tasks = {new AttackCow(ctx), new Bank(ctx), new PickUpHides(ctx), new WalkToCows(ctx), new TanHides(ctx), new CraftLeather(ctx), new SellLeatherItem(ctx)};
 	AtomicInteger integ = new AtomicInteger();
 	private long startTime;
 	@Override
@@ -33,6 +34,7 @@ public class CowKiller extends PollingScript<ClientContext> implements PaintList
 	@Override
 	public void start(){
 		startTime = System.currentTimeMillis();
+		banking = false;//set by gui
 	}
 
 	@Override

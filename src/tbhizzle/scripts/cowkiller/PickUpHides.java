@@ -11,7 +11,7 @@ import tbhizzle.util.Task;
 
 public class PickUpHides extends Task<ClientContext>{
 	private GroundItem hide;
-	private final Filter<GroundItem> hideFilter = new Filter<GroundItem>(){
+	public static final Filter<GroundItem> hideFilter = new Filter<GroundItem>(){
 		@Override
 		public boolean accept(GroundItem g) {
 			return AttackCow.cowTile.distanceTo(g) < 7
@@ -28,7 +28,7 @@ public class PickUpHides extends Task<ClientContext>{
 		return 
 				ctx.backpack.select().count() < 28
 				&&
-				ctx.groundItems.select().select(hideFilter).count() >= 2
+				!(ctx.groundItems.select().select(hideFilter).count() < 3)
 				&&
 				!(ctx.players.local().tile().distanceTo(AttackCow.cowTile) > 6);
 

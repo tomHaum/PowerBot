@@ -10,7 +10,7 @@ import org.powerbot.script.rt6.Item;
 import tbhizzle.util.Task;
 
 public class Bank extends Task<ClientContext>{
-	public static final Tile bankTile = new Tile(2876,3417,0);
+	public static final Tile bankTile = new Tile(2891,3536,0);
 	public int inventories = 0;
 	public Bank(ClientContext ctx) {
 		super(ctx);
@@ -19,10 +19,12 @@ public class Bank extends Task<ClientContext>{
 
 	@Override
 	public boolean activate() {
-		return 
-				ctx.backpack.select().count() == 28
-				||
-				(ctx.players.local().tile().distanceTo(AttackCow.cowTile) > 6);
+		return  CowKiller.banking
+				&&(
+			        ctx.backpack.select().count() == 28
+					||
+					(ctx.players.local().tile().distanceTo(AttackCow.cowTile) > 6)
+				);
 	}
 
 	@Override
