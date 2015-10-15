@@ -59,6 +59,25 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                 }
             }, 1000, 50);*/
         } else {
+            if(ctx.widgets.component(ENTERAMOUNTPARENT, ENTERAMOUNTCHILD).visible()){
+                System.out.println("Entering an amount");
+                enterAmount(999);
+            }else{
+                if(ctx.widgets.component(smeltWidget, smeltable.getWidgetId()).visible()){//crafting menu is up
+                    if (ctx.menu.opened()) {//right click menu is open
+                        System.out.println("smelting x");
+                        selectSmeltX();
+                    } else {//right click menu is not open
+                        System.out.println("right clicking smelt");
+                        //right clicks smelt
+                        rightClickSmelt();
+                    }
+                }else{//no menus are up, just sitting there
+                    System.out.println("Clicking furnace");
+                    clickFurnace(furnace);
+                }
+            }
+            /* old structure, didnt allow for jewelry
             if (ctx.widgets.component(smeltWidget, smeltable.getWidgetId()).visible()) {//smelt menu is up
 
                 if (ctx.menu.opened()) {//right click menu is open
@@ -78,7 +97,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                     System.out.println("Clicking furnace");
                     clickFurnace(furnace);
                 }
-            }
+            }*/
         }
 
     }
@@ -126,7 +145,14 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
     }
 
     private void clickFurnace(GameObject furnace){
-        furnace.interact(false, "Smelt");
+        if(smeltable instanceof Bar) {
+            furnace.interact(false, "Smelt");
+        }
+        if(smeltable instanceof Jewelry){
+            ctx.inventory.select().id(smeltable.getPrimaryId()).peek().click();
+            furnace.interact(false,"Use","Furnace");
+
+        }
         //waits until smelting interface is up
         Condition.wait(new Callable<Boolean>() {
             @Override
@@ -142,7 +168,13 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
         ctx.menu.click(new Filter<Menu.Command>() {
             @Override
             public boolean accept(Menu.Command command) {
-                return command.toString().toLowerCase().startsWith("smelt x");
+                if(smeltable instanceof Bar)
+                    return command.toString().toLowerCase().startsWith("smelt x");
+                if(smeltable instanceof Jewelry) {
+                    System.out.println("hiting make-x");
+                    return command.toString().toLowerCase().startsWith("make-x");
+                }
+                return false;
             }
         });
 

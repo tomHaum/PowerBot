@@ -26,6 +26,8 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
     @Override
     public void poll() {
         //basic skeleton
+        if(smeltable == null)
+            return;
         if (nearTeller()) {
             if (needToBank()) {
                 bank();
@@ -64,7 +66,7 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
     @Override
     public void repaint(Graphics g) {
         g.setColor(Color.BLUE);
-        g.setColor(new Color(256,265,265,10));
+        g.setColor(new Color(255,255,255,100));
         g.fill3DRect(0, 0, 100, 100, false);
         return;
     }
