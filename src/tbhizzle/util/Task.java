@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package tbhizzle.util;
 
 import org.powerbot.script.ClientAccessor;
