@@ -5,6 +5,7 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.concurrent.Callable;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 import org.powerbot.script.*;
 import org.powerbot.script.rt4.*;
 import org.powerbot.script.rt4.Bank.Amount;
@@ -48,9 +49,10 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
     }
 
     private JFrame frame;
-
+    private long startTime = 0;
     @Override
     public void start() {
+        startTime = System.currentTimeMillis();
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -67,10 +69,26 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
     public void repaint(Graphics g) {
         g.setColor(Color.BLUE);
         g.setColor(new Color(255,255,255,100));
-        g.fill3DRect(0, 0, 100, 100, false);
-        return;
+        g.fill3DRect(0, 0, 170, 100, false);
+        g.setColor(Color.BLACK);
+        g.setFont(Font.getFont("Serif"));
+        ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        g.drawString("Al Kharid Smelter",10,20);
+        g.setFont(Font.getFont("SansSerif"));
+        g.drawString("Runtime " + getRunTime(), 10,40);
+
     }
 
+    public String getRunTime(){
+        long diff = System.currentTimeMillis() - startTime;
+        int seconds = (int) (diff / 1000) % 60 ;
+        int minutes = (int) ((diff / (1000*60)) % 60);
+        int hours   = (int) ((diff / (1000*60*60)) % 24);
+        String result = "";
+        result = String.format("%02d:%02d", minutes,seconds);
+        if(hours > 0)result = hours + ":" + result;
+        return result;
+    }
     private boolean nearTeller() {
         //System.out.println("Near Teller?");
         return ctx.players.local().tile().distanceTo(BANKTILE) < 4;
