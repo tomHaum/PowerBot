@@ -1,0 +1,165 @@
+package tbhizzle.oldschool.script.smelter;
+
+import org.powerbot.script.ClientAccessor;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Filter;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt4.ClientContext;
+import org.powerbot.script.rt4.GameObject;
+import org.powerbot.script.rt4.Menu;
+
+import java.util.concurrent.Callable;
+
+/**
+ * Created by Tom on 10/7/2015.
+ */
+public class FurnaceSmelter extends ClientAccessor<ClientContext> {
+
+    public static final Tile FURNACETILE = new Tile(3275, 3186, 0);
+    private static final int FURNACEID = 24009;
+
+    private static final int ENTERAMOUNTPARENT = 162;
+    private static final int ENTERAMOUNTCHILD = 32;
+
+    private GameObject furnace;
+    private int smeltWidget;//this is the parent component to bar smelting widgests
+
+    //public int primaryId = TINORE;
+    //public int secondaryId = COPPERORE;
+
+    public Smeltable smeltable;//
+    public FurnaceSmelter(ClientContext ctx) {
+        super(ctx);
+    }
+
+    public void smelt() {
+        System.out.println("smelting");
+        if (furnace == null || !furnace.valid()) {
+            furnace = ctx.objects.select().id(FURNACEID).peek();
+        }
+        if(ctx.players.local().interacting() == null){
+            System.out.println("not interacting");
+        }else{
+            System.out.println("Interacting with something");
+
+        }
+        //System.out.println("furnace: " + furnace.id());
+        if (!furnace.inViewport())
+           System.out.println("turning to camera");
+            ctx.camera.turnTo(furnace);
+
+        /*need a reliable way to detect if the player is smelting*/
+        if (playerIsSmelting()) {//wait till smelting is over
+            System.out.println("Waiting for smelting to e finished");
+            /*Condition.wait(new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    //put a check for level up here
+                    return ctx.inventory.select().id(COPPERORE).count() == 0;//should be primary
+                }
+            }, 1000, 50);*/
+        } else {
+            if (ctx.widgets.component(smeltWidget, smeltable.getWidgetId()).visible()) {//smelt menu is up
+
+                if (ctx.menu.opened()) {//right click menu is open
+                    System.out.println("smelting x");
+                    selectSmeltX();
+                } else {//right click menu is not open
+                    System.out.println("right clicking smelt");
+                    //right clicks smelt
+                    rightClickSmelt();
+                }
+            } else {//smelt menu is not up
+                //enter amount prompt is up
+                if (ctx.widgets.component(ENTERAMOUNTPARENT, ENTERAMOUNTCHILD).visible()) {
+                    System.out.println("Entering an amount");
+                    enterAmount(999);
+                } else {//no menus are up, just sitting there
+                    System.out.println("Clicking furnace");
+                    clickFurnace(furnace);
+                }
+            }
+        }
+
+    }
+
+    private boolean playerIsSmelting(){
+        //return ctx.players.local().animation() != 0 && !(ctx.players.local().interacting() == null);
+        return false;
+    }
+    private void rightClickSmelt(){
+        ctx.widgets.component(smeltWidget, smeltable.getWidgetId()).click(false);
+
+        //waits until the menu is up
+        Condition.wait(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return ctx.menu.opened();
+            }
+        }, 20, 50);
+    }
+
+    private void enterAmount(int amount){
+        if(amount < 0 )
+            amount *=-1;
+
+        ctx.input.sendln(Integer.toString(amount));
+        //shorter wait to wait for one bar to craft
+        Condition.wait(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return ctx.inventory.select().id(smeltable.getProductId()).count() != 0;
+            }
+        }, 20, 100);
+        //if we crafted one then we should wait for the rest, other wise it will try again-
+        if(ctx.inventory.select().id(smeltable.getProductId()).count() > 0){
+            //this is the actual smelting wait, like waiting for all the bars to finish
+            Condition.wait(new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    System.out.println("waiting for smelting");
+                    return ctx.inventory.select().id(smeltable.getProductId()).count() == 0;
+                }
+            },1000,40);
+        }
+
+    }
+
+    private void clickFurnace(GameObject furnace){
+        furnace.interact(false, "Smelt");
+        //waits until smelting interface is up
+        Condition.wait(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return ctx.widgets.component(smeltWidget, smeltable.getWidgetId()).visible();
+            }
+        }, 20, 50);
+    }
+
+    private void selectSmeltX(){
+        //smelt x
+        //clicks smelt x
+        ctx.menu.click(new Filter<Menu.Command>() {
+            @Override
+            public boolean accept(Menu.Command command) {
+                return command.toString().toLowerCase().startsWith("smelt x");
+            }
+        });
+
+        //waits until ENTER AMOUNT is visible
+        Condition.wait(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return ctx.widgets.component(ENTERAMOUNTPARENT, ENTERAMOUNTCHILD).visible();
+            }
+        }, 100, 50);
+
+    }
+    
+    public void setSmeltable(Smeltable s){
+        this.smeltable = s;
+        this.smeltWidget = s.getComponentId();
+    }
+
+
+}

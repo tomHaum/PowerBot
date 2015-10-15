@@ -1,0 +1,13 @@
+Bank: near teller and dont have the smelting item
+  Activate Teller
+  Deposit inv(except mold?)
+  withdraw items
+Go to Furnace. have the correct smelting item, not near the furnace
+  click minimap repeatidly
+Interact with furnaceh: have the correct smelting item, near furnace
+  use item 
+  click furnace
+  right click to use all
+  wait...
+Go to Bank:not near teller, no smelting item
+  click minimap repeatidly
