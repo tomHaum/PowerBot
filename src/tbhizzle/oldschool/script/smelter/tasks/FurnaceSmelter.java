@@ -8,6 +8,7 @@ import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.GameObject;
 import org.powerbot.script.rt4.Menu;
 import tbhizzle.oldschool.script.smelter.data.Bar;
+import tbhizzle.oldschool.script.smelter.data.Cannonball;
 import tbhizzle.oldschool.script.smelter.data.Jewelry;
 import tbhizzle.oldschool.script.smelter.data.Smeltable;
 
@@ -156,7 +157,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             System.out.println("Bar smelting");
             furnace.interact(false, "Smelt");
         }
-        if(smeltable instanceof Jewelry){
+        if(smeltable instanceof Jewelry || smeltable instanceof Cannonball){
             ctx.inventory.select().id(smeltable.getPrimaryId()).peek().click();
             furnace.interact(false,"Use","Furnace");
 
@@ -181,6 +182,10 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                 if(smeltable instanceof Jewelry) {
                     System.out.println("hiting make-x");
                     return command.toString().toLowerCase().startsWith("make-x");
+                }
+                if(smeltable instanceof Cannonball) {
+                    System.out.println("making all cannon balls");
+                    return command.toString().toLowerCase().startsWith("make all");
                 }
                 return false;
             }

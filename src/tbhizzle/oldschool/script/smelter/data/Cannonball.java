@@ -4,13 +4,14 @@ package tbhizzle.oldschool.script.smelter.data;
  * Created by Tom on 10/14/2015.
  */
 public class Cannonball implements Smeltable{
-    public final static int SMELTWIDGET = -1;//need an account to find widgets
-    private final int primaryId = -1;
+    public final static int SMELTWIDGET = 309;//need an account to find widgets
+
+    private final int primaryId = 2353;
     private final int secondaryId = -1;
-    private final int primaryCount = -1;
-    private final int ballId = -1;
-    private final int ballWidget = -1;
-    private final int mouldId = -1;
+    private final int primaryCount = 28;
+    private final int ballId = 2;
+    private final int ballWidget = 6;
+    private final int mouldId = 4;
     public Cannonball(){
         super();
     }
