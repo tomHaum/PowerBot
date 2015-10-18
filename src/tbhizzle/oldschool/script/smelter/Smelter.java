@@ -17,7 +17,7 @@ import tbhizzle.oldschool.script.smelter.tasks.FurnaceSmelter;
 import javax.swing.*;
 
 
-@Script.Manifest(name = "Honest Smelter", description = "Uses the furnace in Al Khalid to smelt bars, and gold jewelry", properties = "topic=287220,client=4;")
+@Script.Manifest(name = "Honest Smelter", description = "Uses the furnace in Al Khalid to smelt bars, and gold jewelry", properties = "topic=287220;client=4;")
 public class Smelter extends PollingScript<ClientContext> implements PaintListener {
     private static final Tile BANKTILE = new Tile(3269, 3167, 0);
 
