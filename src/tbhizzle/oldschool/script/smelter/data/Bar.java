@@ -1,4 +1,4 @@
-package tbhizzle.oldschool.script.smelter;
+package tbhizzle.oldschool.script.smelter.data;
 
 /**
  * Created by Tom on 10/7/2015.
@@ -6,7 +6,7 @@ package tbhizzle.oldschool.script.smelter;
 public enum Bar implements Smeltable{
     BRONZE(438,436,14,2349,4),
     TEST(1,2,3,4,5);
-    public static final int SMELTWIDGET = 331;
+    public static final int SMELTWIDGET = 311;
     private final int primaryId;
     private final int secondaryId;
     private final int primaryCount;

@@ -1,4 +1,4 @@
-package tbhizzle.oldschool.script.smelter;
+package tbhizzle.oldschool.script.smelter.tasks;
 
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.Condition;
@@ -7,6 +7,9 @@ import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.GameObject;
 import org.powerbot.script.rt4.Menu;
+import tbhizzle.oldschool.script.smelter.data.Bar;
+import tbhizzle.oldschool.script.smelter.data.Jewelry;
+import tbhizzle.oldschool.script.smelter.data.Smeltable;
 
 import java.util.concurrent.Callable;
 
@@ -59,11 +62,13 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                 }
             }, 1000, 50);*/
         } else {
+
             if(ctx.widgets.component(ENTERAMOUNTPARENT, ENTERAMOUNTCHILD).visible()){
                 System.out.println("Entering an amount");
                 enterAmount(999);
             }else{
                 if(ctx.widgets.component(smeltWidget, smeltable.getWidgetId()).visible()){//crafting menu is up
+
                     if (ctx.menu.opened()) {//right click menu is open
                         System.out.println("smelting x");
                         selectSmeltX();
@@ -73,12 +78,14 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                         rightClickSmelt();
                     }
                 }else{//no menus are up, just sitting there
+                    System.out.println("Widget: " + smeltWidget + "; Child: " + smeltable.getWidgetId());
                     System.out.println("Clicking furnace");
                     clickFurnace(furnace);
                 }
             }
-            /* old structure, didnt allow for jewelry
-            if (ctx.widgets.component(smeltWidget, smeltable.getWidgetId()).visible()) {//smelt menu is up
+            // old structure, didnt allow for
+            /*Component smeltComponent = ctx.widgets.component(smeltWidget,smeltable.getWidgetId());
+            if (smeltComponent.visible()) {//smelt menu is up
 
                 if (ctx.menu.opened()) {//right click menu is open
                     System.out.println("smelting x");
@@ -129,7 +136,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             public Boolean call() throws Exception {
                 return ctx.inventory.select().id(smeltable.getProductId()).count() != 0;
             }
-        }, 20, 100);
+        }, 200, 20);
         //if we crafted one then we should wait for the rest, other wise it will try again-
         if(ctx.inventory.select().id(smeltable.getProductId()).count() > 0){
             //this is the actual smelting wait, like waiting for all the bars to finish
@@ -137,15 +144,16 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                 @Override
                 public Boolean call() throws Exception {
                     System.out.println("waiting for smelting");
-                    return ctx.inventory.select().id(smeltable.getProductId()).count() == 0;
+                    return ctx.inventory.select().id(smeltable.getPrimaryId()).count() == 0;
                 }
-            },1000,40);
+            },1000,200);
         }
 
     }
 
     private void clickFurnace(GameObject furnace){
         if(smeltable instanceof Bar) {
+            System.out.println("Bar smelting");
             furnace.interact(false, "Smelt");
         }
         if(smeltable instanceof Jewelry){
@@ -184,7 +192,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             public Boolean call() throws Exception {
                 return ctx.widgets.component(ENTERAMOUNTPARENT, ENTERAMOUNTCHILD).visible();
             }
-        }, 100, 50);
+        }, 200, 50);
 
     }
     

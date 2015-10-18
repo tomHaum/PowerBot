@@ -2,14 +2,17 @@
 package tbhizzle.oldschool.script.smelter;
 
 import java.awt.*;
-import java.util.Iterator;
 import java.util.concurrent.Callable;
 
-import com.sun.corba.se.impl.orbutil.graph.Graph;
 import org.powerbot.script.*;
 import org.powerbot.script.rt4.*;
 import org.powerbot.script.rt4.Bank.Amount;
 import org.powerbot.script.rt4.ClientContext;
+import tbhizzle.oldschool.script.smelter.data.Bar;
+import tbhizzle.oldschool.script.smelter.data.Cannonball;
+import tbhizzle.oldschool.script.smelter.data.Jewelry;
+import tbhizzle.oldschool.script.smelter.data.Smeltable;
+import tbhizzle.oldschool.script.smelter.tasks.FurnaceSmelter;
 
 import javax.swing.*;
 
@@ -153,7 +156,7 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
                     ctx.bank.withdraw(((Jewelry) smelter.smeltable).getMouldId(), 1);
                 }
             }
-            if(smelter.smeltable instanceof  Cannonball){
+            if(smelter.smeltable instanceof Cannonball){
                 ctx.bank.deposit(smelter.smeltable.getProductId(), Amount.ALL);
                 if (ctx.inventory.select().id(((Cannonball) smelter.smeltable).getMouldId()).count() != 1) {
                     ctx.bank.depositInventory();

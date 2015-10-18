@@ -1,5 +1,10 @@
 package tbhizzle.oldschool.script.smelter;
 
+import tbhizzle.oldschool.script.smelter.data.Bar;
+import tbhizzle.oldschool.script.smelter.data.Cannonball;
+import tbhizzle.oldschool.script.smelter.data.Jewelry;
+import tbhizzle.oldschool.script.smelter.data.Smeltable;
+
 import java.awt.BorderLayout;
 
 import javax.swing.*;
@@ -173,17 +178,17 @@ public class SmelterGui extends JFrame {
     private void setComboBox(JRadioButton source){
         selectionList.removeAll();
         selectionList.removeAllItems();
-        if (source.getText() == "Bars") {
+        if (source.getText().equals("Bars")) {
             for (Bar b : Bar.values()) {
                 selectionList.addItem(b.name());
             }
         }
-        if(source.getText() ==  "Jewelry") {
+        if(source.getText().equals("Jewelry")) {
             for (Jewelry j : Jewelry.values())
                 selectionList.addItem(j.name());
 
         }
-        if(source.getText() == "Cannon Balls") {
+        if(source.getText().equals("Cannon Balls")) {
             selectionList.addItem("Cannon Balls");
         }
 
