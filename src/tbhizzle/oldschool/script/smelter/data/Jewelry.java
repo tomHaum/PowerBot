@@ -4,9 +4,9 @@ package tbhizzle.oldschool.script.smelter.data;
  * Created by Tom on 10/7/2015.
  */
 public enum Jewelry implements Smeltable{
-    RING(2357,-1,28,1636,7,1592),//need to check ids
+    RING(2357,-1,28,1635,7,1592),//need to check ids
     NECKLACE(2357,-1,28,1654,20,1597),
-    AMULET(2357,-1,28,1674,32,1595);
+    AMULET(2357,-1,28,1692,32,1595);
 
 
     public final static int SMELTWIDGET = 446;

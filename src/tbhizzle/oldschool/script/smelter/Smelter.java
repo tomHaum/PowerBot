@@ -152,7 +152,6 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
                 ctx.bank.deposit(smelter.smeltable.getProductId(), Amount.ALL);
                 if (ctx.inventory.select().id(((Jewelry) smelter.smeltable).getMouldId()).count() != 1) {
                     ctx.bank.depositInventory();
-
                     ctx.bank.withdraw(((Jewelry) smelter.smeltable).getMouldId(), 1);
                 }
             }
