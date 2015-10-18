@@ -4,9 +4,18 @@ package tbhizzle.oldschool.script.smelter.data;
  * Created by Tom on 10/7/2015.
  */
 public enum Bar implements Smeltable{
-    BRONZE(438,436,14,2349,4),
-    TEST(1,2,3,4,5);
+
+    BRONZE(438, 436, 14, 2349, 4),
+    IRON(440, -1, 28, 2351, 6),
+    SILVER(442, -1, 28, 2355, 7),
+    STEEL(440, 453, 9, 2353, 8 ),
+    GOLD(444, -1, 28, 2357, 9),
+    MITHRIL(447, 453, 5, 2359, 10),
+    ADAMANTITIE(449, 453, 4, 2361, 11),
+    RUNITE(451, 453, 3, 2363, 12);
+
     public static final int SMELTWIDGET = 311;
+
     private final int primaryId;
     private final int secondaryId;
     private final int primaryCount;
