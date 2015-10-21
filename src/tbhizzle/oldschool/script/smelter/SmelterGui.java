@@ -19,6 +19,7 @@ public class SmelterGui extends JFrame {
 
     private JPanel contentPane;
     private final ButtonGroup smeltType = new ButtonGroup();
+    private final ButtonGroup bankLocation = new ButtonGroup();
 
     /**
      * Launch the application.
@@ -127,6 +128,32 @@ public class SmelterGui extends JFrame {
         panel.add(rdbtnCannonBalls, gbc_rdbtnCannonBalls);
         rdbtnCannonBalls.addActionListener(myListener);
 
+        JLabel lblBanking = new JLabel("Banking Location:");
+        GridBagConstraints gbc_lblBanking = new GridBagConstraints();
+        gbc_lblBanking.anchor = GridBagConstraints.WEST;
+        gbc_lblBanking.insets = new Insets(0, 0, 5, 5);
+        gbc_lblBanking.gridx = 0;
+        gbc_lblBanking.gridy = 5;
+        panel.add(lblBanking, gbc_lblBanking);
+
+        JRadioButton rdbtnAlKharid = new JRadioButton("Al Kharid");
+        GridBagConstraints gbc_rdbtnAlKharid = new GridBagConstraints();
+        bankLocation.add(rdbtnAlKharid);
+        gbc_rdbtnAlKharid.anchor = GridBagConstraints.WEST;
+        gbc_rdbtnAlKharid.insets = new Insets(0, 0, 5, 5);
+        gbc_rdbtnAlKharid.gridx = 0;
+        gbc_rdbtnAlKharid.gridy = 6;
+        panel.add(rdbtnAlKharid, gbc_rdbtnAlKharid);
+
+        final JRadioButton rdbtnEdgeville = new JRadioButton("Edgeville");
+        GridBagConstraints gbc_rdbtnEdgeville = new GridBagConstraints();
+        bankLocation.add(rdbtnEdgeville);
+        gbc_rdbtnEdgeville.anchor = GridBagConstraints.WEST;
+        gbc_rdbtnEdgeville.insets = new Insets(0, 0, 0, 5);
+        gbc_rdbtnEdgeville.gridx = 0;
+        gbc_rdbtnEdgeville.gridy = 7;
+        panel.add(rdbtnEdgeville, gbc_rdbtnEdgeville);
+
         JButton btnStart = new JButton("Start");
         GridBagConstraints gbc_btnStart = new GridBagConstraints();
         gbc_btnStart.gridx = 2;
@@ -151,7 +178,10 @@ public class SmelterGui extends JFrame {
                 if(smeltable != null) {
                     System.out.print("Smeltable id: " + smeltable.getPrimaryId());
                     smelter.setSmeltable(smeltable);
-
+                    if (rdbtnEdgeville.isSelected())
+                        smelter.setLocation(1);
+                    else
+                        smelter.setLocation(0);
                     SmelterGui.this.setVisible(false);
                     SmelterGui.this.dispose();
                 }
@@ -163,7 +193,8 @@ public class SmelterGui extends JFrame {
         });
 
 
-
+        rdbtnBars.doClick();
+        rdbtnAlKharid.doClick();
     }
 
     private class MyListener implements ActionListener{

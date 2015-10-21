@@ -19,9 +19,12 @@ import javax.swing.*;
 
 @Script.Manifest(name = "Honest Smelter", description = "Uses the furnace in Al Khalid to smelt bars, and gold jewelry, and Cannonballs", properties = "topic=1287220;client=4")
 public class Smelter extends PollingScript<ClientContext> implements PaintListener {
-    private static final Tile BANKTILE = new Tile(3269, 3167, 0);
+    private static final Tile[] BANKTILES = {new Tile(3269, 3167, 0), new Tile(3096, 3494, 0)};
+    private static final Tile[] FURNACETILES = {new Tile(3275, 3186, 0), new Tile(3108, 3499, 0)};
+    private static final int[] FURNACEIDS = {24009,16469};
 
     FurnaceSmelter smelter = new FurnaceSmelter(ctx);
+    private Tile bankTile = BANKTILES[0];
 
     private static final int BANKBOOTHID = 11744;
 
@@ -94,7 +97,7 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
     }
     private boolean nearTeller() {
         //System.out.println("Near Teller?");
-        return ctx.players.local().tile().distanceTo(BANKTILE) < 4;
+        return ctx.players.local().tile().distanceTo(bankTile) < 4;
     }
 
     private boolean needToBank() {
@@ -108,7 +111,7 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
 
     private boolean nearFurnace() {
         //System.out.println("Near Furnace?");
-        return ctx.players.local().tile().distanceTo(FurnaceSmelter.FURNACETILE) < 4;
+        return ctx.players.local().tile().distanceTo(FurnaceSmelter.furnaceTile) < 4;
     }
 
     private GameObject booth;
@@ -173,12 +176,12 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
 
     private void walkToFurnace() {
         System.out.println("walking to furnace");
-        walk(FurnaceSmelter.FURNACETILE);
+        walk(FurnaceSmelter.furnaceTile);
     }
 
     private void walkToBank() {
         System.out.println("walking to bank");
-        walk(BANKTILE);
+        walk(bankTile);
     }
 
     private void walk(Tile t) {
@@ -188,6 +191,10 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
     public void setSmeltable(Smeltable s) {
         this.smeltable = s;
         smelter.setSmeltable(s);
+    }
+    public void setLocation(int i){
+        bankTile = BANKTILES[i];
+        smelter.setFurnace(FURNACETILES[i],FURNACEIDS[i]);
     }
 
 

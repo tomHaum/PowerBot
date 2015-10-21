@@ -19,17 +19,14 @@ import java.util.concurrent.Callable;
  */
 public class FurnaceSmelter extends ClientAccessor<ClientContext> {
 
-    public static final Tile FURNACETILE = new Tile(3275, 3186, 0);
-    private static final int FURNACEID = 24009;
+    public  static Tile furnaceTile = new Tile(3275, 3186, 0);
+    private int furnaceId = 24009;
 
     private static final int ENTERAMOUNTPARENT = 162;
     private static final int ENTERAMOUNTCHILD = 32;
 
     private GameObject furnace;
     private int smeltWidget;//this is the parent component to bar smelting widgests
-
-    //public int primaryId = TINORE;
-    //public int secondaryId = COPPERORE;
 
     public Smeltable smeltable;//
     public FurnaceSmelter(ClientContext ctx) {
@@ -39,7 +36,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
     public void smelt() {
         System.out.println("smelting");
         if (furnace == null || !furnace.valid()) {
-            furnace = ctx.objects.select().id(FURNACEID).peek();
+            furnace = ctx.objects.select().id(furnaceId).peek();
         }
         if(ctx.players.local().interacting() == null){
             System.out.println("not interacting");
@@ -206,5 +203,9 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
         this.smeltWidget = s.getComponentId();
     }
 
+    public void setFurnace(Tile tile, int id){
+        furnaceTile = tile;
+        furnaceId = id;
+    }
 
 }
