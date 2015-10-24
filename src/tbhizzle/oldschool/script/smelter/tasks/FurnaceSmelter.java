@@ -1,7 +1,5 @@
 package tbhizzle.oldschool.script.smelter.tasks;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
-import org.powerbot.bot.rt6.Con;
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
