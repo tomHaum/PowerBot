@@ -6,7 +6,8 @@ package tbhizzle.oldschool.script.smelter.data;
 public enum Jewelry implements Smeltable{
     RING(2357,-1,28,1635,7,1592),//need to check ids
     NECKLACE(2357,-1,28,1654,20,1597),
-    AMULET(2357,-1,28,1673,32,1595);
+    AMULET(2357,-1,28,1673,32,1595),
+    EMERALD_AMULET(2357,1605,13,1677,34,1595);
 
 
     public final static int SMELTWIDGET = 446;

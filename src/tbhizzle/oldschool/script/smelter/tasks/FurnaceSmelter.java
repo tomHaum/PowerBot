@@ -142,14 +142,15 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             //this is the actual smelting wait, like waiting for all the bars to finish
             int count = 20;
             int newXp;
-            Condition.sleep(4000);
+            int sleep = (smeltable instanceof Cannonball? 15000: 4000);
+            Condition.sleep(sleep);
             int skill = (smeltable instanceof Jewelry? Constants.SKILLS_CRAFTING: Constants.SKILLS_SMITHING);
             while(count-- > 0 && smithXP !=  ctx.skills.experience(skill)){
                 System.out.println("smith XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
 
                 System.out.println("XP Sleeping");
                 smithXP = ctx.skills.experience(skill);
-                Condition.sleep(4000);
+                Condition.sleep(sleep);
 
             }
             System.out.println("done sleeping");
