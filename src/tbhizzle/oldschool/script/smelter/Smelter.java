@@ -106,7 +106,6 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
             ctx.bank.close();
         if (!(ctx.game.tab() == Game.Tab.INVENTORY))
             ctx.game.tab(Game.Tab.INVENTORY);
-        Color.BLUE;
 
         return ctx.inventory.select().id(smelter.smeltable.getPrimaryId()).count() == 0;
                 //||(smeltable.getSecondaryId() == -1? true:ctx.inventory.select().id(smeltable.getSecondaryId()).count() < (28-smeltable.getPrimaryCount())/smeltable.getPrimaryCount());
