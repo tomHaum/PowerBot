@@ -20,7 +20,7 @@ import java.util.concurrent.Callable;
  */
 public class FurnaceSmelter extends ClientAccessor<ClientContext> {
 
-    public  static Tile furnaceTile = new Tile(3275, 3186, 0);
+    public  Tile furnaceTile = new Tile(3275, 3186, 0);
     private int furnaceId = 24009;
 
     private static final int ENTERAMOUNTPARENT = 162;
@@ -129,7 +129,8 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             amount *=-1;
 
         ctx.input.sendln(Integer.toString(amount));
-        int smithXP = ctx.skills.experience(Constants.SKILLS_SMITHING);
+        int skill = (smeltable instanceof Jewelry? Constants.SKILLS_CRAFTING: Constants.SKILLS_SMITHING);
+        int smithXP = ctx.skills.experience(skill);
         //shorter wait to wait for one bar to craft
         Condition.wait(new Callable<Boolean>() {
             @Override
@@ -144,7 +145,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             int newXp;
             int sleep = (smeltable instanceof Cannonball? 15000: 4000);
             Condition.sleep(sleep);
-            int skill = (smeltable instanceof Jewelry? Constants.SKILLS_CRAFTING: Constants.SKILLS_SMITHING);
+
             while(count-- > 0 && smithXP !=  ctx.skills.experience(skill)){
                 System.out.println("smith XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
 

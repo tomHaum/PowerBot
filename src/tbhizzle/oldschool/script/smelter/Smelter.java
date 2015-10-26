@@ -2,12 +2,15 @@
 package tbhizzle.oldschool.script.smelter;
 
 import java.awt.*;
+import java.util.Iterator;
 import java.util.concurrent.Callable;
 
+import org.powerbot.bot.rt6.Con;
 import org.powerbot.script.*;
 import org.powerbot.script.rt4.*;
 import org.powerbot.script.rt4.Bank.Amount;
 import org.powerbot.script.rt4.ClientContext;
+import org.powerbot.script.rt4.Menu;
 import tbhizzle.oldschool.script.smelter.data.Bar;
 import tbhizzle.oldschool.script.smelter.data.Cannonball;
 import tbhizzle.oldschool.script.smelter.data.Jewelry;
@@ -15,6 +18,7 @@ import tbhizzle.oldschool.script.smelter.data.Smeltable;
 import tbhizzle.oldschool.script.smelter.tasks.FurnaceSmelter;
 
 import javax.swing.*;
+import javax.swing.text.html.HTMLDocument;
 
 
 @Script.Manifest(name = "Honest Smelter", description = "Uses the furnace in Al Khalid to smelt bars, and gold jewelry, and Cannonballs", properties = "topic=1287220;client=4")
@@ -113,7 +117,7 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
 
     private boolean nearFurnace() {
         //System.out.println("Near Furnace?");
-        return ctx.players.local().tile().distanceTo(FurnaceSmelter.furnaceTile) < 4;
+        return ctx.players.local().tile().distanceTo(smelter.furnaceTile) < 4;
     }
 
 
@@ -192,15 +196,44 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
 
     private void walkToFurnace() {
         System.out.println("walking to furnace");
-        walk(FurnaceSmelter.furnaceTile);
+        if(bankTile == BANKTILES[0])//if it is in al khadir
+            openDoor();
+        else
+            System.out.println("not in al kharid");
+        walk(smelter.furnaceTile);
     }
 
     private void walkToBank() {
         System.out.println("walking to bank");
+        if(bankTile == BANKTILES[0])//if it is in al khadir
+            openDoor();
+        else
+            System.out.println("not in al kharid");
         walk(bankTile);
     }
+    private static final Tile DOOROPEN = new Tile(3279,3185,0);
+    private static final Tile DOORCLOSE = new Tile(3280,3185,0);
+    private void openDoor(){
+        Iterator<GameObject> objects = ctx.objects.select().iterator();
+        while(objects.hasNext()){
+            GameObject object = objects.next();
+            if(object.name().toLowerCase().compareTo("door") == 0){
+                if(object.tile().x() == DOORCLOSE.x() && object.tile().y() == DOORCLOSE.y()){
+                    object.interact(false, "Open");
+                    Condition.wait(new Callable<Boolean>() {
+                        @Override
+                        public Boolean call() throws Exception {
+                            return ctx.players.local().inMotion();
+                        }
+                    }, 200, 20);
+                    break;
+                }
 
+            }
+        }
+    }
     private void walk(Tile t) {
+        if(ctx.movement.reachable(ctx.players.local().tile(), t))
         ctx.movement.step(t);
     }
 
