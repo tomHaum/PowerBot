@@ -106,15 +106,17 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
             ctx.bank.close();
         if (!(ctx.game.tab() == Game.Tab.INVENTORY))
             ctx.game.tab(Game.Tab.INVENTORY);
+        Color.BLUE;
 
-        return ctx.inventory.select().id(smelter.smeltable.getPrimaryId()).count() == 0
-                ||(smeltable.getSecondaryId() == -1? true:ctx.inventory.select().id(smeltable.getSecondaryId()).count() < (28-smeltable.getPrimaryCount())/smeltable.getPrimaryCount());
+        return ctx.inventory.select().id(smelter.smeltable.getPrimaryId()).count() == 0;
+                //||(smeltable.getSecondaryId() == -1? true:ctx.inventory.select().id(smeltable.getSecondaryId()).count() < (28-smeltable.getPrimaryCount())/smeltable.getPrimaryCount());
     }
 
     private boolean nearFurnace() {
         //System.out.println("Near Furnace?");
         return ctx.players.local().tile().distanceTo(FurnaceSmelter.furnaceTile) < 4;
     }
+
 
     private GameObject booth;
 
