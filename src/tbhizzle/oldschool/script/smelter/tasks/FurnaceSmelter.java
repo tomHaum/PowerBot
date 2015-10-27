@@ -8,6 +8,8 @@ import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Constants;
 import org.powerbot.script.rt4.GameObject;
 import org.powerbot.script.rt4.Menu;
+
+import tbhizzle.oldschool.script.smelter.Smelter;
 import tbhizzle.oldschool.script.smelter.data.Bar;
 import tbhizzle.oldschool.script.smelter.data.Cannonball;
 import tbhizzle.oldschool.script.smelter.data.Jewelry;
@@ -19,7 +21,7 @@ import java.util.concurrent.Callable;
  * Created by Tom on 10/7/2015.
  */
 public class FurnaceSmelter extends ClientAccessor<ClientContext> {
-
+    Smelter parent;
     public  Tile furnaceTile = new Tile(3275, 3186, 0);
     private int furnaceId = 24009;
 
@@ -30,8 +32,9 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
     private int smeltWidget;//this is the parent component to bar smelting widgests
 
     public Smeltable smeltable;//
-    public FurnaceSmelter(ClientContext ctx) {
+    public FurnaceSmelter(Smelter s, ClientContext ctx) {
         super(ctx);
+        parent = s;
     }
 
     public void smelt() {
@@ -147,12 +150,11 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             Condition.sleep(sleep);
 
             while(count-- > 0 && smithXP !=  ctx.skills.experience(skill)){
-                System.out.println("smith XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
+                parent.log("smith XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
 
-                System.out.println("XP Sleeping");
+                System.err.println("Bar smelting");
                 smithXP = ctx.skills.experience(skill);
                 Condition.sleep(sleep);
-
             }
             System.out.println("done sleeping");
         }else{

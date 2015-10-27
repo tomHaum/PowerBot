@@ -27,7 +27,7 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
     private static final Tile[] FURNACETILES = {new Tile(3275, 3186, 0), new Tile(3108, 3499, 0)};
     private static final int[] FURNACEIDS = {24009,16469};
 
-    FurnaceSmelter smelter = new FurnaceSmelter(ctx);
+    FurnaceSmelter smelter = new FurnaceSmelter(this, ctx);
     private Tile bankTile = BANKTILES[0];
 
     private static final int BANKBOOTHID = 11744;
@@ -246,7 +246,9 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
         smelter.setFurnace(FURNACETILES[i],FURNACEIDS[i]);
     }
 
-
+    public void log(String s){
+        log.info(s);
+    }
 
 
 }
