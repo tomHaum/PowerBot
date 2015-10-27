@@ -156,7 +156,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                 smithXP = ctx.skills.experience(skill);
                 Condition.sleep(sleep);
             }
-            System.out.println("done sleeping");
+            parent.log("done sleeping");
         }else{
             System.out.println("We have " + ctx.inventory.count() + " amultets");
         }
