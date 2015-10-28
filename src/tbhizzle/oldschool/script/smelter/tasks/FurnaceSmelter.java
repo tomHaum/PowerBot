@@ -45,7 +45,10 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
         if(ctx.players.local().interacting() == null){
             System.out.println("not interacting");
         }else{
-            System.out.println("Interacting with something");
+            if(ctx.players.local().interacting().valid())
+                System.out.println("Interacting with something");
+            else
+                System.out.println("still not interacting");
 
         }
         //System.out.println("furnace: " + furnace.id());
@@ -172,8 +175,13 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             furnace.interact(false, "Smelt");
         }
         if(smeltable instanceof Jewelry || smeltable instanceof Cannonball){
-            ctx.inventory.select().id(smeltable.getPrimaryId()).peek().click();
-            furnace.interact(false,"Use","Furnace");
+            System.out.println(ctx.inventory.selectedItemIndex());
+            if(!ctx.inventory.selectedItem().valid())
+                ctx.inventory.select().id(smeltable.getPrimaryId()).peek().click();
+            if(!ctx.inventory.selectedItem().name().toLowerCase().equals("gold bar"))
+                System.out.println(ctx.inventory.selectedItemIndex());
+            if(!ctx.inventory.selectedItem().equals(ctx.inventory.nil()))
+                furnace.interact(false,"Use","Furnace");
 
         }
         //waits until smelting interface is up
