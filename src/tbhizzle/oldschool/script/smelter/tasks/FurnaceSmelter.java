@@ -151,13 +151,22 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             int newXp;
             int sleep = (smeltable instanceof Cannonball? 15000: 4000);
             Condition.sleep(sleep);
+            if(smeltable instanceof Cannonball){
+                while(count-- > 0 && ctx.inventory.select().id(smeltable.getPrimaryId()).count() > 0){
+                    Condition.sleep(sleep);
+                    if(ctx.widgets.component(233,0).visible()){
+                        break;
+                    }
+                    parent.log(ctx.inventory.count() + " steel bars in inventory");
+                }
+            }else{
+                while(count-- > 0 && smithXP !=  ctx.skills.experience(skill)){
+                    parent.log("smith XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
 
-            while(count-- > 0 && smithXP !=  ctx.skills.experience(skill)){
-                parent.log("smith XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
-
-                System.err.println("Bar smelting");
-                smithXP = ctx.skills.experience(skill);
-                Condition.sleep(sleep);
+                    System.err.println("Bar smelting");
+                    smithXP = ctx.skills.experience(skill);
+                    Condition.sleep(sleep);
+                }
             }
             parent.log("done sleeping");
         }else{
