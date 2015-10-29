@@ -1,14 +1,10 @@
 package tbhizzle.oldschool.script.smelter.tasks;
 
+import org.powerbot.script.*;
 import org.powerbot.script.ClientAccessor;
-import org.powerbot.script.Condition;
-import org.powerbot.script.Filter;
-import org.powerbot.script.Tile;
-import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.Constants;
-import org.powerbot.script.rt4.GameObject;
-import org.powerbot.script.rt4.Menu;
+import org.powerbot.script.rt4.*;
 
+import org.powerbot.script.rt4.ClientContext;
 import tbhizzle.oldschool.script.smelter.Smelter;
 import tbhizzle.oldschool.script.smelter.data.Bar;
 import tbhizzle.oldschool.script.smelter.data.Cannonball;
@@ -185,10 +181,10 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
         }
         if(smeltable instanceof Jewelry || smeltable instanceof Cannonball){
             System.out.println(ctx.inventory.selectedItemIndex());
-            if(!ctx.inventory.selectedItem().valid())
-                ctx.inventory.select().id(smeltable.getPrimaryId()).peek().click();
-            if(!ctx.inventory.selectedItem().name().toLowerCase().equals("gold bar"))
-                System.out.println(ctx.inventory.selectedItemIndex());
+            Item firstItem = ctx.inventory.select().id(smeltable.getPrimaryId()).poll();
+            int firstItemX = firstItem.centerPoint().x + Random.nextInt(-12, 8);
+            int firstItemY = firstItem.centerPoint().y + Random.nextInt(-12, 12);
+            ctx.input.click(firstItemX, firstItemY, true);
             if(!ctx.inventory.selectedItem().equals(ctx.inventory.nil()))
                 furnace.interact(false,"Use","Furnace");
 
