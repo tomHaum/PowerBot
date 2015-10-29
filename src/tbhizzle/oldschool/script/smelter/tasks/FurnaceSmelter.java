@@ -123,7 +123,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             if(smeltable instanceof Cannonball){
                 parent.log("should have made at least one cannon ball");
                 parent.log("there are " + ctx.inventory.select().id(smeltable.getPrimaryId()).count() + "steel bars");
-                while(true){
+                while(count-- > 0){
                     final int cannonballs = ctx.inventory.select().id(smeltable.getProductId()).peek().stackSize();
                     parent.log("there are " + cannonballs + " Cannonballs in the inventory");
                     Condition.wait(new Callable<Boolean>() {
@@ -131,7 +131,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                         public Boolean call() throws Exception {
                             return ctx.inventory.select().id(smeltable.getProductId()).peek().stackSize() <= cannonballs
                         }
-                    },1000, 5);
+                    },600, 13);
                     if(ctx.inventory.select().id(smeltable.getProductId()).peek().stackSize() > cannonballs){
                         parent.log("Made more cannonballs, Great");
                     }else{
