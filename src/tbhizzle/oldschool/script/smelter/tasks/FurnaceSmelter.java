@@ -227,21 +227,34 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                     }
                 }
             } else {*/
-                parent.log("not a cannonball");
+               /* parent.log("not a cannonball");
                 while (count-- > 0 && smithXP != ctx.skills.experience(skill)) {
                     parent.log("smith XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
 
                     System.err.println("Bar smelting");
                     smithXP = ctx.skills.experience(skill);
                     Condition.sleep(sleep);
+        }
+            }*/
+            parent.log("There should be " + ctx.inventory.select().id(smeltable.getPrimaryId()).count() + " materials left");
+            while(true) {
+                Condition.wait(new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() throws Exception {
+                        return ctx.players.local().animation() == 899 || ctx.widgets.component(233, 0).visible() || ctx.inventory.select().id(smeltable.getPrimaryId()).count() == 0;
+                    }
+                }, 60, 110);
+                if (ctx.players.local().animation() != 899 || ctx.widgets.component(233, 0).visible() || ctx.inventory.select().id(smeltable.getPrimaryId()).count() == 0) {
+                    break;
                 }
-            //}
+            }
+
             parent.log("done sleeping");
         } else {
             System.out.println("We have " + ctx.inventory.count() + " amultets");
         }
         if (ctx.widgets.component(233, 0).visible()) {
-            ctx.input.send(" ");
+        ctx.input.send(" ");
         }
     }
 
