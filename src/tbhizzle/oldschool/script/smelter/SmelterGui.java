@@ -14,13 +14,14 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
 public class SmelterGui extends JFrame {
 
     private JPanel contentPane;
     private final ButtonGroup smeltType = new ButtonGroup();
     private final ButtonGroup bankLocation = new ButtonGroup();
-
+    private File prefrences;
     /**
      * Launch the application.
      */
@@ -45,9 +46,17 @@ public class SmelterGui extends JFrame {
     private Smelter smelter;
     final JComboBox selectionList;
 
-    public SmelterGui(Smelter s) {
+    final JRadioButton rdbtnBars;
+    final JRadioButton rdbtnJewelry;
+    final JRadioButton rdbtnCannonBalls;
 
+    final JRadioButton rdbtnEdgeville;
+    final JRadioButton rdbtnAlKharid;
+
+    public SmelterGui(Smelter s, File prefrences) {
         super("My Smelter");
+        this.prefrences = prefrences;
+
         smelter = s;
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 450, 300);
@@ -95,7 +104,8 @@ public class SmelterGui extends JFrame {
         gbc_selectionList.gridy = 2;
         panel.add(selectionList, gbc_selectionList);
 
-        final JRadioButton rdbtnBars = new JRadioButton("Bars");
+
+        rdbtnBars = new JRadioButton("Bars");
         rdbtnBars.setHorizontalAlignment(SwingConstants.LEFT);
         smeltType.add(rdbtnBars);
         GridBagConstraints gbc_rdbtnBars = new GridBagConstraints();
@@ -106,7 +116,7 @@ public class SmelterGui extends JFrame {
         panel.add(rdbtnBars, gbc_rdbtnBars);
         rdbtnBars.addActionListener(myListener);
 
-        final JRadioButton rdbtnJewelry = new JRadioButton("Jewelry");
+        rdbtnJewelry = new JRadioButton("Jewelry");
         rdbtnJewelry.setHorizontalAlignment(SwingConstants.LEFT);
         smeltType.add(rdbtnJewelry);
         GridBagConstraints gbc_rdbtnJewlery = new GridBagConstraints();
@@ -117,7 +127,7 @@ public class SmelterGui extends JFrame {
         panel.add(rdbtnJewelry, gbc_rdbtnJewlery);
         rdbtnJewelry.addActionListener(myListener);
 
-        final JRadioButton rdbtnCannonBalls = new JRadioButton("Cannon Balls");
+        rdbtnCannonBalls = new JRadioButton("Cannon Balls");
         rdbtnCannonBalls.setHorizontalAlignment(SwingConstants.LEFT);
         smeltType.add(rdbtnCannonBalls);
         GridBagConstraints gbc_rdbtnCannonBalls = new GridBagConstraints();
@@ -136,7 +146,7 @@ public class SmelterGui extends JFrame {
         gbc_lblBanking.gridy = 5;
         panel.add(lblBanking, gbc_lblBanking);
 
-        JRadioButton rdbtnAlKharid = new JRadioButton("Al Kharid");
+        rdbtnAlKharid = new JRadioButton("Al Kharid");
         GridBagConstraints gbc_rdbtnAlKharid = new GridBagConstraints();
         bankLocation.add(rdbtnAlKharid);
         gbc_rdbtnAlKharid.anchor = GridBagConstraints.WEST;
@@ -145,7 +155,7 @@ public class SmelterGui extends JFrame {
         gbc_rdbtnAlKharid.gridy = 6;
         panel.add(rdbtnAlKharid, gbc_rdbtnAlKharid);
 
-        final JRadioButton rdbtnEdgeville = new JRadioButton("Edgeville");
+        rdbtnEdgeville = new JRadioButton("Edgeville");
         GridBagConstraints gbc_rdbtnEdgeville = new GridBagConstraints();
         bankLocation.add(rdbtnEdgeville);
         gbc_rdbtnEdgeville.anchor = GridBagConstraints.WEST;
@@ -162,26 +172,35 @@ public class SmelterGui extends JFrame {
         btnStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               Smeltable smeltable = null;
+                Smeltable smeltable = null;
+                String type = "";
                 if(rdbtnBars.isSelected()) {
                     System.out.println("Bar");
                     smeltable = Bar.values()[selectionList.getSelectedIndex()];
+                    type = "Bar";
                 }
                 if(rdbtnJewelry.isSelected()){
                     System.out.println("Jewelry");
                     smeltable = Jewelry.values()[selectionList.getSelectedIndex()];
+                    type = "Jewelry";
                 }
                 if(rdbtnCannonBalls.isSelected()) {
                     System.out.println("Cannonball");
                     smeltable = new Cannonball();
+                    type = "Cannonball";
                 }
                 if(smeltable != null) {
                     System.out.print("Smeltable id: " + smeltable.getPrimaryId());
                     smelter.setSmeltable(smeltable);
-                    if (rdbtnEdgeville.isSelected())
+                    String location;
+                    if (rdbtnEdgeville.isSelected()) {
                         smelter.setLocation(1);
-                    else
+                        location = "Ed";
+                    }else{
                         smelter.setLocation(0);
+                        location = "Al";
+                    }
+                    savePrefrences(location, type, selectionList.getSelectedIndex());
                     SmelterGui.this.setVisible(false);
                     SmelterGui.this.dispose();
                 }
@@ -195,6 +214,7 @@ public class SmelterGui extends JFrame {
 
         rdbtnBars.doClick();
         rdbtnAlKharid.doClick();
+        loadPrefrences();
     }
 
     private class MyListener implements ActionListener{
@@ -225,6 +245,64 @@ public class SmelterGui extends JFrame {
 
     }
 
+    public void loadPrefrences(){
+        if(prefrences.exists()){
+            try{
+                BufferedReader reader = new BufferedReader(new FileReader(prefrences));
+
+                String line;
+                line = reader.readLine().split(":")[1];
+                smelter.log(line);
+                setLocation(line);
+                line = reader.readLine().split(":")[1];
+                smelter.log(line);
+                setType(line);
+                line = reader.readLine().split(":")[1];
+                smelter.log(line);
+                setIndex(Integer.parseInt(line));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void savePrefrences(String location, String type, int i){
+        try {
+            prefrences.delete();
+            prefrences.createNewFile();
+            smelter.log("Saving");
+            PrintWriter writer = new PrintWriter(new FileWriter(prefrences));
+            writer.println("Location:"+location);
+            smelter.log("Location:" + location);
+            writer.println("Type:" + type);
+            smelter.log("Location:" + location);
+            writer.println("Index:" + i);
+            smelter.log("Location:"+location);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setLocation(String location){
+        if(location.equals("Al")){
+            rdbtnAlKharid.doClick();
+        }else if(location.equals("Ed")){
+            rdbtnEdgeville.doClick();
+        }
+    }
+    private void setType(String type){
+        if(type.equals("Bars")){
+            rdbtnBars.doClick();
+        }else if(type.equals("Jewelry")){
+            rdbtnJewelry.doClick();
+        }else if(type.equals("Cannonball"))
+            rdbtnCannonBalls.doClick();
+    }
+    private void setIndex(int index){
+        selectionList.setSelectedIndex(index);
+    }
 
 
 }

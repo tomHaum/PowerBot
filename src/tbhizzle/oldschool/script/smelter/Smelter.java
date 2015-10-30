@@ -2,6 +2,7 @@
 package tbhizzle.oldschool.script.smelter;
 
 import java.awt.*;
+import java.io.File;
 import java.util.Iterator;
 import java.util.concurrent.Callable;
 
@@ -58,7 +59,7 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
         }
     }
 
-    private JFrame frame;
+    private SmelterGui frame;
     private long startTime = 0;
     @Override
     public void start() {
@@ -66,11 +67,16 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
         log("Cannonballs should be working");
         log("Mis-clicks should be minimal");
         startTime = System.currentTimeMillis();
+        final File  strorage = this.getStorageDirectory();
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    frame = new SmelterGui(Smelter.this);
+                    File preferences = new File(strorage,"HonestSmelter.pref");
+                    log(preferences.getAbsolutePath());
+                    frame = new SmelterGui(Smelter.this,preferences);
                     frame.setVisible(true);
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
