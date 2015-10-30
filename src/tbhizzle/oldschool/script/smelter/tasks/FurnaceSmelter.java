@@ -238,16 +238,12 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             }*/
             parent.log("There should be " + ctx.inventory.select().id(smeltable.getPrimaryId()).count() + " materials left");
             while(true) {
-                final int materials = ctx.inventory.select().id(smeltable.getPrimaryId()).count();
-                parent.log("THere are " + materials + " materials");
                 Condition.wait(new Callable<Boolean>() {
-
                     @Override
                     public Boolean call() throws Exception {
-                        //return ctx.players.local().animation() == 899 || ctx.widgets.component(233, 0).visible() || ctx.inventory.select().id(smeltable.getPrimaryId()).count() == 0;
-                        return ctx.inventory.select().id(smeltable.getPrimaryId()).count() < materials;
+                        return ctx.players.local().animation() == 899 || ctx.widgets.component(233, 0).visible() || ctx.inventory.select().id(smeltable.getPrimaryId()).count() == 0;
                     }
-                }, 60, 15);
+                }, 60, 110);
                 if (ctx.players.local().animation() != 899 || ctx.widgets.component(233, 0).visible() || ctx.inventory.select().id(smeltable.getPrimaryId()).count() == 0) {
                     break;
                 }
