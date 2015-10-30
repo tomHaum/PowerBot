@@ -37,3 +37,13 @@ public class Cannonball implements Smeltable{
         return SMELTWIDGET;
     }
 }
+
+/*
+[7:48:56 PM] Az: 827
+[7:48:58 PM] Az: uhm
+[7:49:02 PM] Az: it does like
+[7:49:16 PM] Az: one normal smelt animation, followed by instant cb animation
+[7:49:27 PM] Az: then sleeps for like 2.5 secs
+[7:49:31 PM] Az: and another cb animation
+[7:49:39 PM] Az: lemme stream it for you
+*/

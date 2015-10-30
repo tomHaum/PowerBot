@@ -48,9 +48,10 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
 
         }
         //System.out.println("furnace: " + furnace.id());
-        if (!furnace.inViewport())
-           System.out.println("turning to camera");
+        if (!furnace.inViewport()) {
+            System.out.println("turning to camera");
             ctx.camera.turnTo(furnace);
+        }
 
         /*need a reliable way to detect if the player is smelting*/
         if (playerIsSmelting()) {//wait till smelting is over
@@ -129,7 +130,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                     Condition.wait(new Callable<Boolean>() {
                         @Override
                         public Boolean call() throws Exception {
-                            return ctx.inventory.select().id(smeltable.getProductId()).peek().stackSize() <= cannonballs
+                            return ctx.inventory.select().id(smeltable.getProductId()).peek().stackSize() <= cannonballs;
                         }
                     },600, 13);
                     if(ctx.inventory.select().id(smeltable.getProductId()).peek().stackSize() > cannonballs){
