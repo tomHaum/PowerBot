@@ -199,7 +199,10 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                 parent.log("We are doing Jewelery");
             } else if (smeltable instanceof Bar) {
                 parent.log("We are doing a bar");
+            }else{
+                parent.log("Im fucked");
             }
+            parent.log("what is going on");
             if (smeltable instanceof Cannonball) {
                 parent.log("should have made at least one cannon ball");
                 parent.log("there are " + ctx.inventory.select().id(smeltable.getPrimaryId()).count() + "steel bars");

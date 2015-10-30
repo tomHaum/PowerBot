@@ -249,6 +249,7 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
 
     public void log(String s){
         log.info(s);
+        System.out.println(s);
     }
 
 
