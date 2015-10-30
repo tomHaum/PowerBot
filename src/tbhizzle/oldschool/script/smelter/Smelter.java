@@ -22,7 +22,7 @@ import javax.swing.*;
 import javax.swing.text.html.HTMLDocument;
 
 
-@Script.Manifest(name = "Honest Smelter", description = "Uses the furnace in Al Khalid to smelt bars, and gold jewelry, and Cannonballs", properties = "topic=1287220;client=4")
+@Script.Manifest(name = "Honest Smelter", description = "Uses the furnace in Al Khalid and Edgeville to smelt bars, and gold jewelry, and Cannonballs", properties = "topic=1287220;client=4")
 public class Smelter extends PollingScript<ClientContext> implements PaintListener {
     private static final Tile[] BANKTILES = {new Tile(3269, 3167, 0), new Tile(3096, 3494, 0)};
     private static final Tile[] FURNACETILES = {new Tile(3275, 3186, 0), new Tile(3108, 3499, 0)};
