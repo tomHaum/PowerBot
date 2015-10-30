@@ -238,6 +238,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             }*/
             parent.log("There should be " + ctx.inventory.select().id(smeltable.getPrimaryId()).count() + " materials left");
             while(true) {
+                parent.log("Condition.wait");
                 Condition.wait(new Callable<Boolean>() {
                     @Override
                     public Boolean call() throws Exception {
@@ -259,3 +260,18 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
     }
 
 }
+
+/*
+}
+
+
+private int[] EdgevilleBounds = new int[]{-18, 37, -108, 7, -65, 50};
+private int[] AlKharidBounds = new int[]{-114, 128, -197, 0, -145, 161};
+
+final GameObject FURNACE = ctx.objects.select().id(FURNACE_ID).nearest().poll();
+if (location = edge) {
+    FURNACE.bounds(EdgevilleBounds);
+} else if (location = al kharid) {
+        FURNACE.bounds(AlKharidBounds);
+    }
+ */
