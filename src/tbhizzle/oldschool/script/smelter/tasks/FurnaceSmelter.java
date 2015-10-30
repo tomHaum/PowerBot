@@ -24,11 +24,14 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
     private static final int ENTERAMOUNTPARENT = 162;
     private static final int ENTERAMOUNTCHILD = 32;
 
+    private final static int[] EdgevilleBounds = new int[]{-18, 37, -108, 7, -65, 50};
+    private final static int[] AlKharidBounds = new int[]{-114, 128, -197, 0, -145, 161};
+
     private GameObject furnace;
     private int smeltWidget;//this is the parent component to bar smelting widgests
-
+    private String location = "Al";
     public Smeltable smeltable;//
-    public FurnaceSmelter(Smelter s, ClientContext ctx) {
+    public FurnaceSmelter(ClientContext ctx, Smelter s) {
         super(ctx);
         parent = s;
     }
@@ -37,6 +40,12 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
         System.out.println("smelting");
         if (furnace == null || !furnace.valid()) {
             furnace = ctx.objects.select().id(furnaceId).peek();
+            if(location == "Al"){
+                furnace.bounds(AlKharidBounds);
+            }
+            if(location == "Ed"){
+                furnace.bounds(EdgevilleBounds);
+            }
         }
         if(ctx.players.local().interacting() == null){
             System.out.println("not interacting");
@@ -105,21 +114,23 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             amount *=-1;
 
         ctx.input.sendln(Integer.toString(amount));
-        smeltWait();
 
     }
 
     private void clickFurnace(GameObject furnace){
+
         if(smeltable instanceof Bar) {
             System.out.println("Bar smelting");
             furnace.interact(false, "Smelt");
         }
         if(smeltable instanceof Jewelry || smeltable instanceof Cannonball){
             System.out.println(ctx.inventory.selectedItemIndex());
-            Item firstItem = ctx.inventory.select().id(smeltable.getPrimaryId()).poll();
-            int firstItemX = firstItem.centerPoint().x + Random.nextInt(-12, 8);
-            int firstItemY = firstItem.centerPoint().y + Random.nextInt(-12, 12);
-            ctx.input.click(firstItemX, firstItemY, true);
+            if(ctx.inventory.selectedItem().equals(ctx.inventory.nil())){
+                Item firstItem = ctx.inventory.select().id(smeltable.getPrimaryId()).poll();
+                int firstItemX = firstItem.centerPoint().x + Random.nextInt(-12, 8);
+                int firstItemY = firstItem.centerPoint().y + Random.nextInt(-12, 12);
+                ctx.input.click(firstItemX, firstItemY, true);
+            }
             if(!ctx.inventory.selectedItem().equals(ctx.inventory.nil()))
                 furnace.interact(false,"Use","Furnace");
 
@@ -153,9 +164,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                 return false;
             }
         });
-        if(smeltable instanceof Cannonball){
-            smeltWait();
-        }
+        smeltWait();
         //waits until ENTER AMOUNT is visible
         Condition.wait(new Callable<Boolean>() {
             @Override
@@ -174,6 +183,10 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
     public void setFurnace(Tile tile, int id){
         furnaceTile = tile;
         furnaceId = id;
+    }
+
+    public void setLocation(String location){
+        this.location = location;
     }
 
     private void smeltWait() {
@@ -236,9 +249,10 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                     Condition.sleep(sleep);
         }
             }*/
+
             parent.log("There should be " + ctx.inventory.select().id(smeltable.getPrimaryId()).count() + " materials left");
             while(true) {
-                parent.log("Condition.wait");
+                //parent.log("Condition.wait");
                 Condition.wait(new Callable<Boolean>() {
                     @Override
                     public Boolean call() throws Exception {

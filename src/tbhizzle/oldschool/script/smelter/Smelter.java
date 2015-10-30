@@ -27,7 +27,7 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
     private static final Tile[] FURNACETILES = {new Tile(3275, 3186, 0), new Tile(3108, 3499, 0)};
     private static final int[] FURNACEIDS = {24009,16469};
 
-    FurnaceSmelter smelter = new FurnaceSmelter(this, ctx);
+    FurnaceSmelter smelter = new FurnaceSmelter(ctx, this);
     private Tile bankTile = BANKTILES[0];
 
     private static final int BANKBOOTHID = 11744;
@@ -62,7 +62,9 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
     private long startTime = 0;
     @Override
     public void start() {
-        log("Version: 1.02");
+        log("Version: 1.1");
+        log("Cannonballs should be working");
+        log("Mis-clicks should be minimal");
         startTime = System.currentTimeMillis();
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -245,6 +247,12 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
     public void setLocation(int i){
         bankTile = BANKTILES[i];
         smelter.setFurnace(FURNACETILES[i],FURNACEIDS[i]);
+        if(i == 0){
+            smelter.setLocation("Al");
+        }
+        if(i == 1){
+            smelter.setLocation("Ed");
+        }
     }
 
     public void log(String s){
