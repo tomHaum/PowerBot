@@ -212,14 +212,17 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                     Condition.wait(new Callable<Boolean>() {
                         @Override
                         public Boolean call() throws Exception {
+
                             return ctx.inventory.select().id(smeltable.getProductId()).peek().stackSize() <= cannonballs;
                         }
                     }, 600, 13);
-                    if (ctx.inventory.select().id(smeltable.getProductId()).peek().stackSize() > cannonballs) {
+                    int newCbs = ctx.inventory.select().id(smeltable.getProductId()).peek().stackSize();
+                    parent.log("there are " + newCbs + " Cannonballs in the inventory");
+                    if (newCbs > cannonballs) {
                         parent.log("Made more cannonballs, Great");
                     } else {
                         parent.log("didnt make more cannonballs, must be out of steel bars");
-                        parent.log("Steel bars: " + ctx.inventory.select().id(smeltable.getPrimaryId()).peek().stackSize());
+                        parent.log("Steel bars: " + ctx.inventory.select().id(smeltable.getPrimaryId()).count());
                         break;
                     }
                 }
