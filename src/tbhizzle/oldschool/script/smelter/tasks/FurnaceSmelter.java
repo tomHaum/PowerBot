@@ -203,7 +203,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                 parent.log("Im fucked");
             }
             parent.log("what is going on");
-            if (smeltable instanceof Cannonball) {
+            /*if (smeltable instanceof Cannonball) {
                 parent.log("should have made at least one cannon ball");
                 parent.log("there are " + ctx.inventory.select().id(smeltable.getPrimaryId()).count() + "steel bars");
                 while (count-- > 0) {
@@ -226,7 +226,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                         break;
                     }
                 }
-            } else {
+            } else {*/
                 parent.log("not a cannonball");
                 while (count-- > 0 && smithXP != ctx.skills.experience(skill)) {
                     parent.log("smith XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
@@ -235,7 +235,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                     smithXP = ctx.skills.experience(skill);
                     Condition.sleep(sleep);
                 }
-            }
+            //}
             parent.log("done sleeping");
         } else {
             System.out.println("We have " + ctx.inventory.count() + " amultets");
