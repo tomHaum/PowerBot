@@ -63,11 +63,12 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
     private long startTime = 0;
     @Override
     public void start() {
-        log("Version: 1.1");
+        log("Version: 1.2");
         log("Cannonballs should be working");
         log("Mis-clicks should be minimal");
         startTime = System.currentTimeMillis();
         final File  strorage = this.getStorageDirectory();
+        this.
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
