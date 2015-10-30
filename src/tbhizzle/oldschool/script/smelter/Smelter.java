@@ -68,7 +68,6 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
         log("Mis-clicks should be minimal");
         startTime = System.currentTimeMillis();
         final File  strorage = this.getStorageDirectory();
-        this.
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
