@@ -105,66 +105,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             amount *=-1;
 
         ctx.input.sendln(Integer.toString(amount));
-        final int skill = (smeltable instanceof Jewelry? Constants.SKILLS_CRAFTING: Constants.SKILLS_SMITHING);
-        int smithXP = ctx.skills.experience(skill);
-        //shorter wait to wait for one bar to craft
-        Condition.wait(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return ctx.inventory.select().id(smeltable.getProductId()).count() != 0;
-            }
-        }, 200, 20);
-        //if we crafted one then we should wait for the rest, other wise it will try again-
-        if(ctx.inventory.select().id(smeltable.getProductId()).count() > 0){
-            //this is the actual smelting wait, like waiting for all the bars to finish
-            int count = 20;
-            int newXp;
-            int sleep = (smeltable instanceof Cannonball? 15000: 4000);
-            Condition.sleep(sleep);
-            if(smeltable instanceof Cannonball){
-                parent.log("We are doing cannonballs");
-            }else if(smeltable instanceof Jewelry){
-                parent.log("We are doing Jewelery");
-            }else if(smeltable instanceof Bar){
-                parent.log("We are doing a bar");
-            }
-            if(smeltable instanceof Cannonball){
-                parent.log("should have made at least one cannon ball");
-                parent.log("there are " + ctx.inventory.select().id(smeltable.getPrimaryId()).count() + "steel bars");
-                while(count-- > 0){
-                    final int cannonballs = ctx.inventory.select().id(smeltable.getProductId()).peek().stackSize();
-                    parent.log("there are " + cannonballs + " Cannonballs in the inventory");
-                    Condition.wait(new Callable<Boolean>() {
-                        @Override
-                        public Boolean call() throws Exception {
-                            return ctx.inventory.select().id(smeltable.getProductId()).peek().stackSize() <= cannonballs;
-                        }
-                    },600, 13);
-                    if(ctx.inventory.select().id(smeltable.getProductId()).peek().stackSize() > cannonballs){
-                        parent.log("Made more cannonballs, Great");
-                    }else{
-                        parent.log("didnt make more cannonballs, must be out of steel bars");
-                        parent.log("Steel bars: " + ctx.inventory.select().id(smeltable.getPrimaryId()).peek().stackSize());
-                        break;
-                    }
-                }
-            }else{
-                parent.log("not a cannonball");
-                while(count-- > 0 && smithXP !=  ctx.skills.experience(skill)){
-                    parent.log("smith XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
-
-                    System.err.println("Bar smelting");
-                    smithXP = ctx.skills.experience(skill);
-                    Condition.sleep(sleep);
-                }
-            }
-            parent.log("done sleeping");
-        }else{
-            System.out.println("We have " + ctx.inventory.count() + " amultets");
-        }
-        if(ctx.widgets.component(233,0).visible()){
-            ctx.input.send(" ");
-        }
+        smeltWait();
 
     }
 
@@ -183,6 +124,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                 furnace.interact(false,"Use","Furnace");
 
         }
+
         //waits until smelting interface is up
         Condition.wait(new Callable<Boolean>() {
             @Override
@@ -211,7 +153,9 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                 return false;
             }
         });
-
+        if(smeltable instanceof Cannonball){
+            smeltWait();
+        }
         //waits until ENTER AMOUNT is visible
         Condition.wait(new Callable<Boolean>() {
             @Override
@@ -230,6 +174,69 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
     public void setFurnace(Tile tile, int id){
         furnaceTile = tile;
         furnaceId = id;
+    }
+
+    private void smeltWait() {
+        final int skill = (smeltable instanceof Jewelry ? Constants.SKILLS_CRAFTING : Constants.SKILLS_SMITHING);
+        int smithXP = ctx.skills.experience(skill);
+        //shorter wait to wait for one bar to craft
+        Condition.wait(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return ctx.inventory.select().id(smeltable.getProductId()).count() != 0;
+            }
+        }, 200, 20);
+        //if we crafted one then we should wait for the rest, other wise it will try again-
+        if (ctx.inventory.select().id(smeltable.getProductId()).count() > 0) {
+            //this is the actual smelting wait, like waiting for all the bars to finish
+            int count = 20;
+            int newXp;
+            int sleep = (smeltable instanceof Cannonball ? 15000 : 4000);
+            Condition.sleep(sleep);
+            if (smeltable instanceof Cannonball) {
+                parent.log("We are doing cannonballs");
+            } else if (smeltable instanceof Jewelry) {
+                parent.log("We are doing Jewelery");
+            } else if (smeltable instanceof Bar) {
+                parent.log("We are doing a bar");
+            }
+            if (smeltable instanceof Cannonball) {
+                parent.log("should have made at least one cannon ball");
+                parent.log("there are " + ctx.inventory.select().id(smeltable.getPrimaryId()).count() + "steel bars");
+                while (count-- > 0) {
+                    final int cannonballs = ctx.inventory.select().id(smeltable.getProductId()).peek().stackSize();
+                    parent.log("there are " + cannonballs + " Cannonballs in the inventory");
+                    Condition.wait(new Callable<Boolean>() {
+                        @Override
+                        public Boolean call() throws Exception {
+                            return ctx.inventory.select().id(smeltable.getProductId()).peek().stackSize() <= cannonballs;
+                        }
+                    }, 600, 13);
+                    if (ctx.inventory.select().id(smeltable.getProductId()).peek().stackSize() > cannonballs) {
+                        parent.log("Made more cannonballs, Great");
+                    } else {
+                        parent.log("didnt make more cannonballs, must be out of steel bars");
+                        parent.log("Steel bars: " + ctx.inventory.select().id(smeltable.getPrimaryId()).peek().stackSize());
+                        break;
+                    }
+                }
+            } else {
+                parent.log("not a cannonball");
+                while (count-- > 0 && smithXP != ctx.skills.experience(skill)) {
+                    parent.log("smith XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
+
+                    System.err.println("Bar smelting");
+                    smithXP = ctx.skills.experience(skill);
+                    Condition.sleep(sleep);
+                }
+            }
+            parent.log("done sleeping");
+        } else {
+            System.out.println("We have " + ctx.inventory.count() + " amultets");
+        }
+        if (ctx.widgets.component(233, 0).visible()) {
+            ctx.input.send(" ");
+        }
     }
 
 }
