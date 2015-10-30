@@ -122,6 +122,13 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             int sleep = (smeltable instanceof Cannonball? 15000: 4000);
             Condition.sleep(sleep);
             if(smeltable instanceof Cannonball){
+                parent.log("We are doing cannonballs");
+            }else if(smeltable instanceof Jewelry){
+                parent.log("We are doing Jewelery");
+            }else if(smeltable instanceof Bar){
+                parent.log("We are doing a bar");
+            }
+            if(smeltable instanceof Cannonball){
                 parent.log("should have made at least one cannon ball");
                 parent.log("there are " + ctx.inventory.select().id(smeltable.getPrimaryId()).count() + "steel bars");
                 while(count-- > 0){
@@ -142,6 +149,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                     }
                 }
             }else{
+                parent.log("not a cannonball");
                 while(count-- > 0 && smithXP !=  ctx.skills.experience(skill)){
                     parent.log("smith XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
 
