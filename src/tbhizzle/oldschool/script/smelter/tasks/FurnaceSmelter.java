@@ -40,12 +40,6 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
         System.out.println("smelting");
         if (furnace == null || !furnace.valid()) {
             furnace = ctx.objects.select().id(furnaceId).peek();
-            if(location == "Al"){
-                furnace.bounds(AlKharidBounds);
-            }
-            if(location == "Ed"){
-                furnace.bounds(EdgevilleBounds);
-            }
         }
         if(ctx.players.local().interacting() == null){
             System.out.println("not interacting");
@@ -124,16 +118,8 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             furnace.interact(false, "Smelt");
         }
         if(smeltable instanceof Jewelry || smeltable instanceof Cannonball){
-            System.out.println(ctx.inventory.selectedItemIndex());
-            if(ctx.inventory.selectedItem().equals(ctx.inventory.nil())){
-                Item firstItem = ctx.inventory.select().id(smeltable.getPrimaryId()).poll();
-                int firstItemX = firstItem.centerPoint().x + Random.nextInt(-12, 8);
-                int firstItemY = firstItem.centerPoint().y + Random.nextInt(-12, 12);
-                ctx.input.click(firstItemX, firstItemY, true);
-            }
-            if(!ctx.inventory.selectedItem().equals(ctx.inventory.nil()))
-                furnace.interact(false,"Use","Furnace");
-
+            ctx.inventory.select().id(smeltable.getPrimaryId()).peek().click();
+            furnace.interact(false,"Use","Furnace");
         }
 
         //waits until smelting interface is up
