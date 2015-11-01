@@ -235,6 +235,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                     Condition.sleep(sleep);
                 }
             }*/
+            /*
             if(smeltable instanceof Cannonball) {
                 parent.log("There should be " + ctx.inventory.select().id(smeltable.getPrimaryId()).count() + " materials left");
                 while (true) {
@@ -249,16 +250,16 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                         break;
                     }
                 }
-            }else{
-                parent.log("not a cannonball");
-                while (count-- > 0 && smithXP != ctx.skills.experience(skill)) {
-                    parent.log("smith XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
+            }else{*/
 
-                    System.err.println("Bar smelting");
-                    smithXP = ctx.skills.experience(skill);
-                    Condition.sleep(sleep);
-                }
+            while (count-- > 0 && smithXP != ctx.skills.experience(skill)) {
+                parent.log("XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
+
+                System.err.println("Bar smelting");
+                smithXP = ctx.skills.experience(skill);
+                Condition.sleep(sleep);
             }
+
 
             parent.log("done sleeping");
         } else {
