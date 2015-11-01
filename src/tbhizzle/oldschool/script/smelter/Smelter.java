@@ -173,7 +173,9 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
             int secondaryCount = ctx.bank.select().id(smeltable.getSecondaryId()).peek().stackSize();
             System.out.println("primary: " + primaryCount + "; secondary: " + secondaryCount);
 
-            if(primaryCount <= 0 || secondaryCount < (28 - smeltable.getPrimaryCount())/smeltable.getPrimaryCount()){
+            if(primaryCount <= 0 ||
+                    (smeltable.getSecondaryId() != -1 && secondaryCount < (28 - smeltable.getPrimaryCount())/smeltable.getPrimaryCount())){
+
                 log("Not enough ingredients");
                 log("Primary count: "+ primaryCount);
                 log("Secondary count: " + secondaryCount);
