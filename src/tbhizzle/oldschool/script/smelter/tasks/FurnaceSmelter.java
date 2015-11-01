@@ -109,6 +109,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
 
         ctx.input.sendln(Integer.toString(amount));
 
+        smeltWait();
     }
 
     private void clickFurnace(GameObject furnace){
@@ -150,7 +151,6 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                 return false;
             }
         });
-        smeltWait();
         //waits until ENTER AMOUNT is visible
         Condition.wait(new Callable<Boolean>() {
             @Override
