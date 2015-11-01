@@ -121,9 +121,12 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
             ctx.bank.close();
         if (!(ctx.game.tab() == Game.Tab.INVENTORY))
             ctx.game.tab(Game.Tab.INVENTORY);
-
-        return ctx.inventory.select().id(smelter.smeltable.getPrimaryId()).count() == 0;
-                //||(smeltable.getSecondaryId() == -1? true:ctx.inventory.select().id(smeltable.getSecondaryId()).count() < (28-smeltable.getPrimaryCount())/smeltable.getPrimaryCount());
+        int expected = ((28-smeltable.getPrimaryCount())/smeltable.getPrimaryCount());
+        int acutal = ctx.inventory.select().id(smeltable.getSecondaryId()).count();
+        log("Expected:" + expected + "; Actual:"+acutal);
+        return ctx.inventory.select().id(smelter.smeltable.getPrimaryId()).count() == 0
+                ||(smeltable.getSecondaryId() != -1 &&
+                    ctx.inventory.select().id(smeltable.getSecondaryId()).count() < (28-smeltable.getPrimaryCount())/smeltable.getPrimaryCount());
     }
 
     private boolean nearFurnace() {
@@ -173,7 +176,23 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
             int primaryCount = ctx.bank.select().id(smeltable.getPrimaryId()).peek().stackSize();
             int secondaryCount = ctx.bank.select().id(smeltable.getSecondaryId()).peek().stackSize();
             System.out.println("primary: " + primaryCount + "; secondary: " + secondaryCount);
-
+            if(primaryCount < 1){
+                log("Not enough primary ingredients");
+                log("Primary count: "+ primaryCount);
+                log("Secondary count: " + secondaryCount);
+                log("please comment in thread if the script stopped incorrectly, or the above numbers are incorrect");
+                stop();
+                ctx.controller.stop();
+        }
+            if(smeltable.getSecondaryId() != -1 && secondaryCount < (28 - smeltable.getPrimaryCount())/smeltable.getPrimaryCount()){
+                log("Not enough secondary ingredients");
+                log("Primary count: "+ primaryCount);
+                log("Secondary count: " + secondaryCount);
+                log("please comment in thread if the script stopped incorrectly, or the above numbers are incorrect");
+                stop();
+                ctx.controller.stop();
+            }
+            /*
             if(primaryCount <= 0 ||
                     (smeltable.getSecondaryId() != -1 && secondaryCount < (28 - smeltable.getPrimaryCount())/smeltable.getPrimaryCount())){
 
@@ -185,7 +204,7 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
                 ctx.controller.stop();
             }else{
                 System.out.println("good to go");
-            }
+            }*/
             if (smelter.smeltable instanceof Jewelry) {
                 ctx.bank.deposit(smelter.smeltable.getProductId(), Amount.ALL);
                 if (ctx.inventory.select().id(((Jewelry) smelter.smeltable).getMouldId()).count() != 1) {

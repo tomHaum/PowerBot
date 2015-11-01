@@ -118,7 +118,11 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             furnace.interact(false, "Smelt");
         }
         if(smeltable instanceof Jewelry || smeltable instanceof Cannonball){
-            ctx.inventory.select().id(smeltable.getPrimaryId()).peek().click();
+            parent.log("selecting inventory");
+            ctx.inventory.select().id(smeltable.getPrimaryId()).peek().hover();
+            ctx.input.click(true);
+            parent.log("clicking furnace");
+
             furnace.interact(false,"Use","Furnace");
         }
 

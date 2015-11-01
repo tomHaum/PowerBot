@@ -12,8 +12,8 @@ public enum Bar implements Smeltable{
     GOLD(444, -1, 28, 2357, 9),
     MITHRIL(447, 453, 5, 2359, 10),
     ADAMANTITIE(449, 453, 4, 2361, 11),
-    RUNITE(451, 453, 3, 2363, 12);
-
+    RUNITE(451, 453, 3, 2363, 12),
+    TEST(438, -1, 14, 2349, 4);
     public static final int SMELTWIDGET = 311;
 
     private final int primaryId;
