@@ -108,7 +108,6 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             amount *=-1;
 
         ctx.input.sendln(Integer.toString(amount));
-
         smeltWait();
     }
 
@@ -152,6 +151,8 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             }
         });
         //waits until ENTER AMOUNT is visible
+        if(smeltable instanceof Cannonball)
+            smeltWait();
         Condition.wait(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
@@ -235,7 +236,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                     Condition.sleep(sleep);
                 }
             }*/
-            /*
+
             if(smeltable instanceof Cannonball) {
                 parent.log("There should be " + ctx.inventory.select().id(smeltable.getPrimaryId()).count() + " materials left");
                 while (true) {
@@ -250,16 +251,15 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                         break;
                     }
                 }
-            }else{*/
+            }else{
+                while (count-- > 0 && smithXP != ctx.skills.experience(skill)) {
+                    parent.log("XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
 
-            while (count-- > 0 && smithXP != ctx.skills.experience(skill)) {
-                parent.log("XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
-
-                System.err.println("Bar smelting");
-                smithXP = ctx.skills.experience(skill);
-                Condition.sleep(sleep);
+                    System.err.println("Bar smelting");
+                    smithXP = ctx.skills.experience(skill);
+                    Condition.sleep(sleep);
+                }
             }
-
 
             parent.log("done sleeping");
         } else {
