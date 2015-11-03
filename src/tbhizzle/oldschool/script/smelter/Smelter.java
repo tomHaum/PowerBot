@@ -216,17 +216,17 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
                 }
             }
             if(smelter.smeltable instanceof Cannonball){
-                depositAllBut(ctx, ((Cannonball) smeltable).getMouldId());
+                ctx.bank.deposit(smeltable.getProductId(),Amount.ALL);
                 if (ctx.inventory.select().id(((Cannonball) smelter.smeltable).getMouldId()).count() != 1) {
                     ctx.bank.depositInventory();
                     ctx.bank.withdraw(((Cannonball) smelter.smeltable).getMouldId(), 1);
                 }
 
             }
-
-            if(ctx.inventory.select().count() == 28){
+            if(smelter.smeltable instanceof Bar){
                 ctx.bank.depositInventory();
             }
+
             //System.out.println(smelter.smeltable.getPrimaryCount());
             if(smeltable.getPrimaryCount() == 28){
                 ctx.bank.withdraw(smelter.smeltable.getPrimaryId(), Amount.ALL);
