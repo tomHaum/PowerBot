@@ -190,16 +190,16 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                 return ctx.inventory.select().id(smeltable.getProductId()).count() != 0;
             }
         }, 200, 20);*/
-        final int initialCount = ctx.inventory.select().count();
+        final int initialCount = ctx.inventory.select().id(smeltable.getPrimaryId()).count();
         parent.log("Inventory count: " + initialCount + ". Waiting till change in count");
         Condition.wait(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                return ctx.inventory.select().count() != initialCount;
+                return ctx.inventory.select().id(smeltable.getPrimaryId()).count() != initialCount;
             }
         }, 200, 20);
         //if we crafted one then we should wait for the rest, other wise it will try again-
-        if (ctx.inventory.select().count() < initialCount) {
+        if (ctx.inventory.select().id(smeltable.getPrimaryId()).count() < initialCount) {
             //this is the actual smelting wait, like waiting for all the bars to finish
             int count = 20;
             int newXp;
