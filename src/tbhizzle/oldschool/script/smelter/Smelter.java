@@ -123,7 +123,7 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
             ctx.game.tab(Game.Tab.INVENTORY);
         int expected = ((28-smeltable.getPrimaryCount())/smeltable.getPrimaryCount());
         int acutal = ctx.inventory.select().id(smeltable.getSecondaryId()).count();
-        log("Expected:" + expected + "; Actual:"+acutal);
+        //log("Expected:" + expected + "; Actual:"+acutal);
         return ctx.inventory.select().id(smelter.smeltable.getPrimaryId()).count() == 0
                 ||(smeltable.getSecondaryId() != -1 &&
                     ctx.inventory.select().id(smeltable.getSecondaryId()).count() < (28-smeltable.getPrimaryCount())/smeltable.getPrimaryCount());
@@ -151,7 +151,7 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
             System.out.println();
             if (!booth.inViewport())
                 ctx.camera.turnTo(booth);
-            booth.click();
+            booth.interact(false, "Bank");
         }
         Condition.wait(new Callable<Boolean>() {
             @Override
@@ -205,15 +205,17 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
             }else{
                 System.out.println("good to go");
             }*/
+            ;
             if (smelter.smeltable instanceof Jewelry) {
-                ctx.bank.deposit(smelter.smeltable.getProductId(), Amount.ALL);
+                depositAllBut(ctx,((Jewelry)smeltable).getMouldId());
+                //log(ctx.inventory.toString());
                 if (ctx.inventory.select().id(((Jewelry) smelter.smeltable).getMouldId()).count() != 1) {
                     ctx.bank.depositInventory();
                     ctx.bank.withdraw(((Jewelry) smelter.smeltable).getMouldId(), 1);
                 }
             }
             if(smelter.smeltable instanceof Cannonball){
-                ctx.bank.deposit(smelter.smeltable.getProductId(), Amount.ALL);
+                depositAllBut(ctx, ((Jewelry) smeltable).getMouldId());
                 if (ctx.inventory.select().id(((Cannonball) smelter.smeltable).getMouldId()).count() != 1) {
                     ctx.bank.depositInventory();
                     ctx.bank.withdraw(((Cannonball) smelter.smeltable).getMouldId(), 1);
@@ -234,6 +236,25 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
         }
     }
 
+    private void depositAllBut(ClientContext ctx, final int item){
+        if(ctx.bank.opened()){
+            Iterator<Item> iter = ctx.inventory.select().iterator();
+            int[] ids = new int[28];
+            for(int i =0; i < 28; i++)
+                ids[i]=-1;
+            for(int i = 0; i < 28; i++){
+                int id = ctx.inventory.itemAt(i).id();
+                for(int j = 0; j < 28; j++){
+                    if(id == item)
+                        continue;
+                    if(ids[j] != id){
+                        ids[j] = id;
+                        ctx.bank.deposit(id,Amount.ALL);
+                    }
+                }
+            }
+        }
+    }
 
     private void walkToFurnace() {
         System.out.println("walking to furnace");

@@ -1,9 +1,6 @@
 package tbhizzle.oldschool.script.smelter;
 
-import tbhizzle.oldschool.script.smelter.data.Bar;
-import tbhizzle.oldschool.script.smelter.data.Cannonball;
-import tbhizzle.oldschool.script.smelter.data.Jewelry;
-import tbhizzle.oldschool.script.smelter.data.Smeltable;
+import tbhizzle.oldschool.script.smelter.data.*;
 
 import java.awt.BorderLayout;
 
@@ -52,6 +49,7 @@ public class SmelterGui extends JFrame {
 
     final JRadioButton rdbtnEdgeville;
     final JRadioButton rdbtnAlKharid;
+    private JComboBox jewelBox;
 
     public SmelterGui(Smelter s, File prefrences) {
         super("My Smelter");
@@ -65,7 +63,7 @@ public class SmelterGui extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(new BorderLayout(0, 0));
 
-        MyListener myListener = new MyListener();
+        JewelListener jewelListener = new JewelListener();
 
         JLabel lblMytitle = new JLabel("MyTitle");
         contentPane.add(lblMytitle,BorderLayout.NORTH);
@@ -75,7 +73,7 @@ public class SmelterGui extends JFrame {
         GridBagLayout gbl_panel = new GridBagLayout();
         gbl_panel.columnWidths = new int[]{0, 0, 0, 0};
         gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-        gbl_panel.columnWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
+        gbl_panel.columnWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
         gbl_panel.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         panel.setLayout(gbl_panel);
 
@@ -87,7 +85,7 @@ public class SmelterGui extends JFrame {
         GridBagConstraints gbc_txtrThisScriptRuns = new GridBagConstraints();
         gbc_txtrThisScriptRuns.gridwidth = 3;
         gbc_txtrThisScriptRuns.gridheight = 2;
-        gbc_txtrThisScriptRuns.insets = new Insets(0, 0, 5, 5);
+        gbc_txtrThisScriptRuns.insets = new Insets(0, 0, 5, 0);
         gbc_txtrThisScriptRuns.fill = GridBagConstraints.BOTH;
         gbc_txtrThisScriptRuns.gridx = 0;
         gbc_txtrThisScriptRuns.gridy = 0;
@@ -97,7 +95,7 @@ public class SmelterGui extends JFrame {
 
         selectionList = new JComboBox();
         GridBagConstraints gbc_selectionList = new GridBagConstraints();
-        gbc_selectionList.gridheight = 3;
+        gbc_selectionList.gridheight = 2;
         gbc_selectionList.insets = new Insets(0, 0, 5, 0);
         gbc_selectionList.fill = GridBagConstraints.HORIZONTAL;
         gbc_selectionList.gridx = 2;
@@ -114,7 +112,7 @@ public class SmelterGui extends JFrame {
         gbc_rdbtnBars.gridx = 0;
         gbc_rdbtnBars.gridy = 2;
         panel.add(rdbtnBars, gbc_rdbtnBars);
-        rdbtnBars.addActionListener(myListener);
+        rdbtnBars.addActionListener(jewelListener);
 
         rdbtnJewelry = new JRadioButton("Jewelry");
         rdbtnJewelry.setHorizontalAlignment(SwingConstants.LEFT);
@@ -125,7 +123,7 @@ public class SmelterGui extends JFrame {
         gbc_rdbtnJewlery.gridx = 0;
         gbc_rdbtnJewlery.gridy = 3;
         panel.add(rdbtnJewelry, gbc_rdbtnJewlery);
-        rdbtnJewelry.addActionListener(myListener);
+        rdbtnJewelry.addActionListener(jewelListener);
 
         rdbtnCannonBalls = new JRadioButton("Cannon Balls");
         rdbtnCannonBalls.setHorizontalAlignment(SwingConstants.LEFT);
@@ -136,7 +134,16 @@ public class SmelterGui extends JFrame {
         gbc_rdbtnCannonBalls.gridx = 0;
         gbc_rdbtnCannonBalls.gridy = 4;
         panel.add(rdbtnCannonBalls, gbc_rdbtnCannonBalls);
-        rdbtnCannonBalls.addActionListener(myListener);
+        rdbtnCannonBalls.addActionListener(jewelListener);
+
+        jewelBox = new JComboBox<Jewel>(Jewel.values());
+        GridBagConstraints gbc_jewelBox = new GridBagConstraints();
+        gbc_jewelBox.gridheight = 2;
+        gbc_jewelBox.insets = new Insets(0, 0, 5, 0);
+        gbc_jewelBox.fill = GridBagConstraints.HORIZONTAL;
+        gbc_jewelBox.gridx = 2;
+        gbc_jewelBox.gridy = 4;
+        panel.add(jewelBox, gbc_jewelBox);
 
         JLabel lblBanking = new JLabel("Banking Location:");
         GridBagConstraints gbc_lblBanking = new GridBagConstraints();
@@ -166,6 +173,7 @@ public class SmelterGui extends JFrame {
 
         JButton btnStart = new JButton("Start");
         GridBagConstraints gbc_btnStart = new GridBagConstraints();
+        gbc_btnStart.insets = new Insets(0, 0, 5, 0);
         gbc_btnStart.gridx = 2;
         gbc_btnStart.gridy = 6;
         panel.add(btnStart, gbc_btnStart);
@@ -181,8 +189,15 @@ public class SmelterGui extends JFrame {
                 }
                 if(rdbtnJewelry.isSelected()){
                     System.out.println("Jewelry");
-                    smeltable = Jewelry.values()[selectionList.getSelectedIndex()];
-                    type = "Jewelry";
+                    {
+                        smeltable = Jewelry.values()[selectionList.getSelectedIndex()];
+                        type = "Jewelry";
+                        if(jewelBox.getSelectedIndex() != 0){
+                            ((Jewelry)smeltable).setJewel(Jewel.values()[jewelBox.getSelectedIndex()]);
+                            type = "Jewelry"+jewelBox.getSelectedIndex();
+                        }
+
+                    }
                 }
                 if(rdbtnCannonBalls.isSelected()) {
                     System.out.println("Cannonball");
@@ -217,15 +232,6 @@ public class SmelterGui extends JFrame {
         loadPrefrences();
     }
 
-    private class MyListener implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(e.getSource() instanceof JRadioButton){
-                System.out.println("This is a radio button");
-            }
-            setComboBox((JRadioButton) e.getSource());
-        }
-    }
     private void setComboBox(JRadioButton source){
         selectionList.removeAll();
         selectionList.removeAllItems();
@@ -293,16 +299,27 @@ public class SmelterGui extends JFrame {
         }
     }
     private void setType(String type){
-        if(type.equals("Bars")){
+        if(type.startsWith("Bars")){
             rdbtnBars.doClick();
-        }else if(type.equals("Jewelry")){
+        }else if(type.startsWith("Jewelry")){
             rdbtnJewelry.doClick();
-        }else if(type.equals("Cannonball"))
+            smelter.log("jewel number: " + type.split("Jewelry")[1]);
+            jewelBox.setSelectedIndex(Integer.parseInt(type.split("Jewelry")[1]));
+        } else if(type.startsWith("Cannonball"))
             rdbtnCannonBalls.doClick();
     }
     private void setIndex(int index){
         selectionList.setSelectedIndex(index);
     }
 
+
+    private class JewelListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            jewelBox.setVisible(e.getSource() == rdbtnJewelry);
+            setComboBox((JRadioButton) e.getSource());
+        }
+    }
 
 }

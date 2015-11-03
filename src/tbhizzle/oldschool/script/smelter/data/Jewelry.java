@@ -7,8 +7,7 @@ public enum Jewelry implements Smeltable{
     RING(2357,-1,28,1635,7,1592),//need to check ids
     NECKLACE(2357,-1,28,1654,20,1597),
     AMULET(2357,-1,28,1673,32,1595),
-    BRACELET(2357,-1,28,11069,44,11065),
-    EMERALD_AMULET(2357,1605,13,1677,34,1595);
+    BRACELET(2357,-1,28,11069,44,11065);
 
 
     public final static int SMELTWIDGET = 446;
@@ -18,7 +17,7 @@ public enum Jewelry implements Smeltable{
     private final int productId;
     private final int productWidget;
     private final int mouldId;
-
+    private Jewel jewel;
     Jewelry(int p, int s, int pc, int pId, int pw, int m){
         this.primaryId = p;
         this.secondaryId = s;
@@ -26,23 +25,34 @@ public enum Jewelry implements Smeltable{
         this.productId = pId;
         this.productWidget = pw;
         this.mouldId = m;
+        this.jewel = Jewel.NONE;
+    }
+    Jewelry(Jewelry j, Jewel gem){
+       this(j.getPrimaryId(),
+               gem.getId(),
+               (j.getPrimaryCount()-1)/2,
+               j.getProductId(),
+               j.getWidgetId() + gem.getOffset(),
+               j.getMouldId());
     }
 
-
+    public void setJewel(Jewel j){
+        this.jewel = j;
+    }
     public int getPrimaryId(){
         return primaryId;
     }
     public int getSecondaryId(){
-        return secondaryId;
+        return jewel.getId();
     }
     public int getPrimaryCount(){
-        return primaryCount;
+        return (jewel == Jewel.NONE? 28:13);
     }
     public int getProductId(){
         return productId;
     }
     public int getWidgetId(){
-        return productWidget;
+        return productWidget + jewel.getOffset();
     }
     public int getComponentId(){
         return SMELTWIDGET;
