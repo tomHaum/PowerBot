@@ -6,12 +6,10 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.concurrent.Callable;
 
-import org.powerbot.bot.rt6.Con;
 import org.powerbot.script.*;
 import org.powerbot.script.rt4.*;
 import org.powerbot.script.rt4.Bank.Amount;
 import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.Menu;
 import tbhizzle.oldschool.script.smelter.data.Bar;
 import tbhizzle.oldschool.script.smelter.data.Cannonball;
 import tbhizzle.oldschool.script.smelter.data.Jewelry;
