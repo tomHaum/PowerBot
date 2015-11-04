@@ -49,6 +49,7 @@ public class SmelterGui extends JFrame {
 
     final JRadioButton rdbtnEdgeville;
     final JRadioButton rdbtnAlKharid;
+    final JRadioButton rdbtFalador;
     private JComboBox jewelBox;
 
     public SmelterGui(Smelter s, File prefrences) {
@@ -171,12 +172,22 @@ public class SmelterGui extends JFrame {
         gbc_rdbtnEdgeville.gridy = 7;
         panel.add(rdbtnEdgeville, gbc_rdbtnEdgeville);
 
+        rdbtFalador = new JRadioButton("Falador");
+        GridBagConstraints gbc_rdbtFalador = new GridBagConstraints();
+        bankLocation.add(rdbtFalador);
+        gbc_rdbtFalador.anchor = GridBagConstraints.WEST;
+        gbc_rdbtFalador.insets = new Insets(0, 0, 0, 5);
+        gbc_rdbtFalador.gridx = 0;
+        gbc_rdbtFalador.gridy = 8;
+        panel.add(rdbtFalador, gbc_rdbtFalador);
+
         JButton btnStart = new JButton("Start");
         GridBagConstraints gbc_btnStart = new GridBagConstraints();
         gbc_btnStart.insets = new Insets(0, 0, 5, 0);
         gbc_btnStart.gridx = 2;
         gbc_btnStart.gridy = 6;
         panel.add(btnStart, gbc_btnStart);
+
         btnStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -196,6 +207,7 @@ public class SmelterGui extends JFrame {
                             ((Jewelry)smeltable).setJewel(Jewel.values()[jewelBox.getSelectedIndex()]);
                             type = "Jewelry"+jewelBox.getSelectedIndex();
                         }
+                        smelter.log("Type:"+type);
 
                     }
                 }
@@ -211,9 +223,12 @@ public class SmelterGui extends JFrame {
                     if (rdbtnEdgeville.isSelected()) {
                         smelter.setLocation(1);
                         location = "Ed";
-                    }else{
+                    }else if(rdbtnAlKharid.isSelected()){
                         smelter.setLocation(0);
                         location = "Al";
+                    }else{
+                        smelter.setLocation(2);
+                        location = "Fa";
                     }
                     savePrefrences(location, type, selectionList.getSelectedIndex());
                     SmelterGui.this.setVisible(false);
@@ -281,9 +296,9 @@ public class SmelterGui extends JFrame {
             writer.println("Location:"+location);
             smelter.log("Location:" + location);
             writer.println("Type:" + type);
-            smelter.log("Location:" + location);
+            smelter.log("Type:" + type);
             writer.println("Index:" + i);
-            smelter.log("Location:"+location);
+            smelter.log("index:"+ i);
             writer.flush();
             writer.close();
         } catch (IOException e) {
@@ -296,6 +311,8 @@ public class SmelterGui extends JFrame {
             rdbtnAlKharid.doClick();
         }else if(location.equals("Ed")){
             rdbtnEdgeville.doClick();
+        }else if(location.equals("Fa")){
+            rdbtFalador.doClick();
         }
     }
     private void setType(String type){
@@ -304,13 +321,14 @@ public class SmelterGui extends JFrame {
         }else if(type.startsWith("Jewelry")){
             rdbtnJewelry.doClick();
             smelter.log("jewel number: " + type.split("Jewelry")[1]);
-            jewelBox.setSelectedIndex(Integer.parseInt(type.split("Jewelry")[1]));
+        jewelBox.setSelectedIndex(Integer.parseInt(type.split("Jewelry")[1]));
         } else if(type.startsWith("Cannonball"))
             rdbtnCannonBalls.doClick();
     }
     private void setIndex(int index){
         selectionList.setSelectedIndex(index);
     }
+
 
 
     private class JewelListener implements ActionListener{
