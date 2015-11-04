@@ -138,9 +138,9 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
     private void selectSmeltX(){
         //smelt x
         //clicks smelt x
-        ctx.menu.click(new Filter<Menu.Command>() {
+        ctx.menu.click(new Filter<MenuCommand>() {
             @Override
-            public boolean accept(Menu.Command command) {
+            public boolean accept(MenuCommand command) {
                 if(smeltable instanceof Bar)
                     return command.toString().toLowerCase().startsWith("smelt x");
                 if(smeltable instanceof Jewelry) {
