@@ -132,7 +132,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             public Boolean call() throws Exception {
                 return ctx.widgets.component(smeltWidget, smeltable.getWidgetId()).visible();
             }
-        }, 20, 50);
+        }, 200, 10);
     }
 
     private void selectSmeltX(){
