@@ -100,7 +100,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
             public Boolean call() throws Exception {
                 return ctx.menu.opened();
             }
-        }, 20, 50);
+        }, 200, 20);
     }
 
     private void enterAmount(int amount){
