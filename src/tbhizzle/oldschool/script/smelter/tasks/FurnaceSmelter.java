@@ -64,7 +64,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
 
             if(ctx.widgets.component(ENTERAMOUNTPARENT, ENTERAMOUNTCHILD).visible()){
                 System.out.println("Entering an amount");
-                enterAmount(999);
+                enterAmount(Random.nextInt(100,999));
             }else{
                 if(ctx.widgets.component(smeltWidget, smeltable.getWidgetId()).visible()){//crafting menu is up
 
