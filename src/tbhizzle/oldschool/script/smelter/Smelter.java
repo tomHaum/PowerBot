@@ -10,6 +10,7 @@ import org.powerbot.script.*;
 import org.powerbot.script.rt4.*;
 import org.powerbot.script.rt4.Bank.Amount;
 import org.powerbot.script.rt4.ClientContext;
+import org.powerbot.script.rt4.Component;
 import tbhizzle.oldschool.script.smelter.data.Bar;
 import tbhizzle.oldschool.script.smelter.data.Cannonball;
 import tbhizzle.oldschool.script.smelter.data.Jewelry;
@@ -294,8 +295,11 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
         }
     }
     private void walk(Tile t) {
+        if(ctx.movement.energyLevel() > 90){
+            ctx.movement.running(true);
+        }
         if(ctx.movement.reachable(ctx.players.local().tile(), t))
-        ctx.movement.step(t);
+            ctx.movement.step(t);
     }
 
     public void setSmeltable(Smeltable s) {
