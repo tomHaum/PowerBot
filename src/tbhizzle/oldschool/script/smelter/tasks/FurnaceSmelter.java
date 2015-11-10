@@ -1,5 +1,6 @@
 package tbhizzle.oldschool.script.smelter.tasks;
 
+import org.powerbot.bot.Con;
 import org.powerbot.script.*;
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.rt4.*;
@@ -201,7 +202,7 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
         //if we crafted one then we should wait for the rest, other wise it will try again-
         if (ctx.inventory.select().id(smeltable.getPrimaryId()).count() < initialCount) {
             //this is the actual smelting wait, like waiting for all the bars to finish
-            int count = 20;
+            int count = 28;
             int newXp;
             int sleep = (smeltable instanceof Cannonball ? 15000 : 4000);
             Condition.sleep(sleep);
@@ -263,7 +264,15 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                         break;
                     }
                 }
-            }else{
+            }else if(smeltable.equals(Bar.IRON)){
+                //do it by inventory count
+                int primaryCount = ctx.inventory.select().id(smeltable.getPrimaryId()).count();
+                do{
+                    parent.log("Iron Sleeping. Iron count: " + primaryCount);
+                    Condition.sleep(sleep);
+                }while(count-- >0 && primaryCount != ctx.inventory.select().id(smeltable.getPrimaryId()).count());
+            }
+            else{
                 while (count-- > 0 && smithXP != ctx.skills.experience(skill)) {
                     parent.log("XP: " + smithXP + "; new xp: " + ctx.skills.experience(skill));
 

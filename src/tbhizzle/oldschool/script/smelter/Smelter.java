@@ -62,12 +62,13 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
     private long startTime = 0;
     @Override
     public void start() {
-        log("Version: 1.4");
+        log("Version: 1.42");
         log("Cannonballs should be working");
         log("Mis-clicks should be minimal");
         log("Removed the bounding box");
         log("Quitting when out of materials should work properly now");
         log("Added in support of extra Jewels. Post in thead if this breaks anything. I will retract it if it does");
+        log("added new sleeping technique for iron bars");
         startTime = System.currentTimeMillis();
         final File  strorage = this.getStorageDirectory();
         EventQueue.invokeLater(new Runnable() {
