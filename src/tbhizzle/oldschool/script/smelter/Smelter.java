@@ -10,16 +10,11 @@ import org.powerbot.script.*;
 import org.powerbot.script.rt4.*;
 import org.powerbot.script.rt4.Bank.Amount;
 import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.Component;
 import tbhizzle.oldschool.script.smelter.data.Bar;
 import tbhizzle.oldschool.script.smelter.data.Cannonball;
 import tbhizzle.oldschool.script.smelter.data.Jewelry;
 import tbhizzle.oldschool.script.smelter.data.Smeltable;
 import tbhizzle.oldschool.script.smelter.tasks.FurnaceSmelter;
-
-import javax.swing.*;
-import javax.swing.text.html.HTMLDocument;
-
 
 @Script.Manifest(name = "Honest Smelter", description = "Uses the furnace in Al Khalid, Falador and Edgeville to smelt bars, and gold jewelry, and Cannonballs", properties = "topic=1287220;client=4")
 public class Smelter extends PollingScript<ClientContext> implements PaintListener {
@@ -69,6 +64,7 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
         log("Quitting when out of materials should work properly now");
         log("Added in support of extra Jewels. Post in thead if this breaks anything. I will retract it if it does");
         log("added new sleeping technique for iron bars");
+        log("Added iron level breaking");
         startTime = System.currentTimeMillis();
         final File  strorage = this.getStorageDirectory();
         EventQueue.invokeLater(new Runnable() {
