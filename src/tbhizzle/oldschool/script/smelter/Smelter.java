@@ -57,7 +57,7 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
     private long startTime = 0;
     @Override
     public void start() {
-        log("Version: 1.42");
+        log("Version: 1.43");
         log("Cannonballs should be working");
         log("Mis-clicks should be minimal");
         log("Removed the bounding box");
