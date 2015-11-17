@@ -69,7 +69,7 @@ public class RuneCrafterGui extends JFrame {
         gbc_rdbtnEarth.gridy = 4;
         contentPane.add(rdbtnEarth, gbc_rdbtnEarth);
 
-        final JRadioButton rdbtnFire = new JRadioButton("fire");
+        final JRadioButton rdbtnFire = new JRadioButton("Fire");
         altars.add(rdbtnFire);
         GridBagConstraints gbc_rdbtnFire = new GridBagConstraints();
         gbc_rdbtnFire.anchor = GridBagConstraints.WEST;
