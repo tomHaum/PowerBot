@@ -13,7 +13,7 @@ import java.awt.*;
 /**
  * Created by Tom on 11/14/2015.
  */
-@Script.Manifest(name = "Honest Air", description = "Crafts Air Runes", properties = "client=4")
+@Script.Manifest(name = "Honest Air", description = "Crafts Air Runes", properties = "topic=1291090;client=4")
 public class AirRunner extends PollingScript<ClientContext> implements PaintListener {
 
     Long startTime;
