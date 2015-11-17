@@ -1,6 +1,7 @@
 package tbhizzle.oldschool.script.runecrafter.tasks.crafting;
 
 import org.powerbot.script.rt4.ClientContext;
+import org.powerbot.script.rt4.Path;
 import tbhizzle.oldschool.script.runecrafter.RuneCrafter;
 import tbhizzle.oldschool.script.runecrafter.data.Altar;
 import tbhizzle.util.BinaryTask;
@@ -16,10 +17,13 @@ public class WalkToAltar extends BinaryTask<ClientContext> {
         this.airRunner = r;
         this.altar = altar;
     }
-
+    Path path;
     @Override
     public boolean execute() {
-
-        return ctx.movement.step(altar.getAltarEntrance());
+        if(path == null){
+            path = ctx.movement.newTilePath(altar.getPathToAltar());
+        }
+        return path.traverse();
+        //return ctx.movement.step(altar.getAltarEntrance());
     }
 }

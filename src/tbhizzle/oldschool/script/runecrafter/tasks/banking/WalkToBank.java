@@ -1,6 +1,8 @@
 package tbhizzle.oldschool.script.runecrafter.tasks.banking;
 
+import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
+import org.powerbot.script.rt4.Path;
 import tbhizzle.oldschool.script.runecrafter.RuneCrafter;
 import tbhizzle.oldschool.script.runecrafter.data.Altar;
 import tbhizzle.util.BinaryTask;
@@ -17,9 +19,18 @@ public class WalkToBank extends BinaryTask<ClientContext> {
         this.airRunner = r;
         this.altar = altar;
     }
-
+    Path path;
+    Tile[] pathArray;
     @Override
     public boolean execute() {
-        return ctx.movement.step(altar.getBankTile());
+        if(path == null){
+            pathArray = new Tile[altar.getPathToAltar().length - 2];
+           for(int i = 0; i < altar.getPathToAltar().length - 2; i++){
+               pathArray[i] = altar.getPathToAltar()[i];
+           }
+            path = ctx.movement.newTilePath(pathArray).reverse();
+        }
+        return path.traverse();
+        //return ctx.movement.step(altar.getBankTile());
     }
 }

@@ -58,6 +58,7 @@ public class RuneCrafterGui extends JFrame {
         gbc_rdbtnAir.gridy = 3;
         contentPane.add(rdbtnAir, gbc_rdbtnAir);
         rdbtnAir.doClick();
+
         final JRadioButton rdbtnEarth = new JRadioButton("Earth");
         altars.add(rdbtnEarth);
         GridBagConstraints gbc_rdbtnEarth = new GridBagConstraints();
@@ -67,6 +68,26 @@ public class RuneCrafterGui extends JFrame {
         gbc_rdbtnEarth.gridx = 0;
         gbc_rdbtnEarth.gridy = 4;
         contentPane.add(rdbtnEarth, gbc_rdbtnEarth);
+
+        final JRadioButton rdbtnFire = new JRadioButton("fire");
+        altars.add(rdbtnFire);
+        GridBagConstraints gbc_rdbtnFire = new GridBagConstraints();
+        gbc_rdbtnFire.anchor = GridBagConstraints.WEST;
+        gbc_rdbtnFire.gridwidth = 2;
+        gbc_rdbtnFire.insets = new Insets(0, 0, 5, 5);
+        gbc_rdbtnFire.gridx = 0;
+        gbc_rdbtnFire.gridy = 5;
+        contentPane.add(rdbtnFire, gbc_rdbtnFire);
+
+        final JRadioButton rdbtnBody = new JRadioButton("Body");
+        altars.add(rdbtnBody);
+        GridBagConstraints gbc_rdbtnBody = new GridBagConstraints();
+        gbc_rdbtnBody.anchor = GridBagConstraints.WEST;
+        gbc_rdbtnBody.gridwidth = 2;
+        gbc_rdbtnBody.insets = new Insets(0, 0, 5, 5);
+        gbc_rdbtnBody.gridx = 0;
+        gbc_rdbtnBody.gridy = 6;
+        contentPane.add(rdbtnBody, gbc_rdbtnBody);
 
         JCheckBox chckbxAbyss = new JCheckBox("Does Nothing");
         GridBagConstraints gbc_chckbxAbyss = new GridBagConstraints();
@@ -88,8 +109,12 @@ public class RuneCrafterGui extends JFrame {
                 Altar altar;
                 if (rdbtnAir.isSelected()) {
                     altar = Altar.AIR;
-                }else if(rdbtnEarth.isSelected()){
+                }else if(rdbtnEarth.isSelected()) {
                     altar = Altar.EARTH;
+                }else if(rdbtnFire.isSelected()){
+                    altar = Altar.FIRE;
+                }else if (rdbtnBody.isSelected()) {
+                    altar = Altar.BODY;
                 }else{
                     return;
                 }

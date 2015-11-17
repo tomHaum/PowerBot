@@ -4,6 +4,8 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.GameObject;
+import org.powerbot.script.rt4.Interactive;
+import org.powerbot.script.rt4.Npc;
 import tbhizzle.oldschool.script.runecrafter.RuneCrafter;
 import tbhizzle.oldschool.script.runecrafter.data.Altar;
 import tbhizzle.util.BinaryTask;
@@ -25,26 +27,35 @@ public class Bank extends BinaryTask<ClientContext> {
         this.altar = altar;
     }
 
-    GameObject bankBooth;
+    Interactive bank;
+    Npc fadli;
+    private static final int fadliId = 3340;
     @Override
     public boolean execute() {
         if(!ctx.movement.running())
             ctx.movement.running(true);
-        if(bankBooth == null || !bankBooth.valid()){
-            bankBooth = ctx.objects.select().name("Bank Booth").nearest().peek();
+
+        if(bank == null || !bank.valid()){
+            if(altar != Altar.FIRE)
+                bank = ctx.objects.select().name("Bank Booth").nearest().peek();
+            else
+                bank = ctx.npcs.select().id(fadliId).peek();
         }
+
+
         int count = 3;
         if(!ctx.bank.opened()) {
-            if(!bankBooth.interact(false, "Bank"))
-                return false;
-            Condition.wait(new Callable<Boolean>() {
-                @Override
-                public Boolean call() throws Exception {
-                    return ctx.bank.opened();
-                }
-            },200, 3);
-            if(!ctx.bank.opened())
-                return false;
+                if (!bank.interact(false, "Bank"))
+                    return false;
+                Condition.wait(new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() throws Exception {
+                        return ctx.bank.opened();
+                    }
+                }, 200, 3);
+                if (!ctx.bank.opened())
+                    return false;
+
         }
         if(ctx.inventory.select().count() != 0) {
             count = 3;
