@@ -4,7 +4,8 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.GameObject;
-import tbhizzle.oldschool.script.runecrafter.AirRunner;
+import tbhizzle.oldschool.script.runecrafter.RuneCrafter;
+import tbhizzle.oldschool.script.runecrafter.data.Altar;
 import tbhizzle.util.BinaryTask;
 import tbhizzle.util.Task;
 
@@ -14,14 +15,16 @@ import java.util.concurrent.Callable;
  * Created by Tom on 11/15/2015.
  */
 public class Craft extends BinaryTask<ClientContext> {
-    public static final Tile ALTAR_TILE = new Tile(2843, 4832, 0);
-    private static final int AIR_ALTAR_ID = 14897;
+    //public static final Tile ALTAR_TILE = new Tile(2843, 4832, 0);
+    //private static final int AIR_ALTAR_ID = 14897;
     private int[] bounds = new int[]{-167, 187, -90, 72, -152, 152};
-    AirRunner airRunner;
+    RuneCrafter airRunner;
+    Altar altar;
 
-    public Craft(ClientContext context, AirRunner r) {
+    public Craft(ClientContext context, RuneCrafter r, Altar altar) {
         super(context, null, null);
         this.airRunner = r;
+        this.altar = altar;
     }
 
 
@@ -31,7 +34,7 @@ public class Craft extends BinaryTask<ClientContext> {
     @Override
     public boolean execute() {
         if (airAltar == null || !airAltar.valid()) {
-            airAltar = ctx.objects.select().id(AIR_ALTAR_ID).nearest().peek();
+            airAltar = ctx.objects.select().id(altar.getAltarId()).nearest().peek();
             airAltar.doSetBounds(bounds);
         }
         airRunner.crafted(true);

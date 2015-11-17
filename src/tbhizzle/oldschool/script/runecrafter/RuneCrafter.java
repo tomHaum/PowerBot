@@ -6,32 +6,58 @@ import org.powerbot.script.Script;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Constants;
 import org.powerbot.script.rt4.Skills;
+import tbhizzle.oldschool.script.runecrafter.data.Altar;
 import tbhizzle.oldschool.script.runecrafter.tasks.InventoryCheck;
 import tbhizzle.util.BinaryTask;
 
+import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+
 /**
  * Created by Tom on 11/14/2015.
  */
 @Script.Manifest(name = "Honest Runecrafter", description = "Only Crafts air runes for now", properties = "topic=1291090;client=4")
-public class AirRunner extends PollingScript<ClientContext> implements PaintListener {
+public class RuneCrafter extends PollingScript<ClientContext> implements PaintListener {
 
     Long startTime;
     BinaryTask<ClientContext> root;
     int runeCount;
     boolean crafted;
     int experience;
+    RuneCrafterGui frame;
     @Override
     public void start(){
-        root = new InventoryCheck(ctx, this);
+        //root = new InventoryCheck(ctx, this, Altar.AIR);
         startTime = System.currentTimeMillis();
         crafted = false;
         runeCount = 0;
         experience = ctx.skills.experience(Constants.SKILLS_RUNECRAFTING);
+        final File storage = this.getStorageDirectory();
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    File preferences = new File(storage,"HonestSmelter.pref");
+                    log(preferences.getAbsolutePath());
+                    frame = new RuneCrafterGui(RuneCrafter.this,preferences);
+                    frame.setVisible(true);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
     @Override
     public void poll() {
-        root.activate();
+        if(root != null)
+            root.activate();
+        else{
+            if(frame != null && frame.getAltar() != null){
+                root = new InventoryCheck(ctx,this,frame.getAltar());
+            }
+        }
     }
 
     @Override
@@ -68,5 +94,9 @@ public class AirRunner extends PollingScript<ClientContext> implements PaintList
     }
     public boolean crafted(){
         return crafted;
+    }
+    public void log(String s){
+        log.info(s);
+        System.out.println(s);
     }
 }

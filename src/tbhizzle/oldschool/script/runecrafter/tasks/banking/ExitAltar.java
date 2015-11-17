@@ -2,7 +2,8 @@ package tbhizzle.oldschool.script.runecrafter.tasks.banking;
 
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.GameObject;
-import tbhizzle.oldschool.script.runecrafter.AirRunner;
+import tbhizzle.oldschool.script.runecrafter.RuneCrafter;
+import tbhizzle.oldschool.script.runecrafter.data.Altar;
 import tbhizzle.oldschool.script.runecrafter.tasks.crafting.Craft;
 import tbhizzle.util.BinaryTask;
 
@@ -10,11 +11,13 @@ import tbhizzle.util.BinaryTask;
  * Created by Tom on 11/15/2015.
  */
 public class ExitAltar extends BinaryTask<ClientContext> {
-    public static final int PORTAL_ID = 14841;
-    AirRunner airRunner;
-    public ExitAltar(ClientContext clientContext, AirRunner r){
+    //public static final int PORTAL_ID = 14841;
+    RuneCrafter airRunner;
+    Altar altar;
+    public ExitAltar(ClientContext clientContext, RuneCrafter r, Altar altar){
         super(clientContext,null,null);
         this.airRunner = r;
+        this.altar = altar;
     }
 
 
@@ -22,7 +25,7 @@ public class ExitAltar extends BinaryTask<ClientContext> {
     @Override
     public boolean execute() {
         if(exitPortal == null || !exitPortal.valid()){
-            exitPortal = ctx.objects.select().id(PORTAL_ID).nearest().peek();
+            exitPortal = ctx.objects.select().id(altar.getPortalId()).nearest().peek();
         }
         if(airRunner.crafted()){
             airRunner.addCrafted(ctx.inventory.select().peek().stackSize());
@@ -30,6 +33,8 @@ public class ExitAltar extends BinaryTask<ClientContext> {
         }
         if(!exitPortal.inViewport())
             ctx.camera.turnTo(exitPortal);
+        if(!exitPortal.inViewport())
+            ctx.movement.step(exitPortal);
         int count = 3;
         while(!exitPortal.click()){
             count--;

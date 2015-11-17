@@ -66,11 +66,11 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
         log("added new sleeping technique for iron bars");
         log("Added iron level breaking");
         startTime = System.currentTimeMillis();
-        final File  strorage = this.getStorageDirectory();
+        final File  storage = this.getStorageDirectory();
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    File preferences = new File(strorage,"HonestSmelter.pref");
+                    File preferences = new File(storage,"HonestSmelter.pref");
                     log(preferences.getAbsolutePath());
                     frame = new SmelterGui(Smelter.this,preferences);
                     frame.setVisible(true);

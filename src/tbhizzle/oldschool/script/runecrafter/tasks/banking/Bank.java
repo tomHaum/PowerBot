@@ -4,7 +4,8 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.GameObject;
-import tbhizzle.oldschool.script.runecrafter.AirRunner;
+import tbhizzle.oldschool.script.runecrafter.RuneCrafter;
+import tbhizzle.oldschool.script.runecrafter.data.Altar;
 import tbhizzle.util.BinaryTask;
 
 import java.util.concurrent.Callable;
@@ -14,12 +15,14 @@ import java.util.concurrent.Callable;
  */
 public class Bank extends BinaryTask<ClientContext> {
 
-    public static final Tile BANK_TILE = new Tile(3012, 3356, 0);
-    AirRunner airRunner;
+    //public static final Tile BANK_TILE = new Tile(3012, 3356, 0);
+    RuneCrafter airRunner;
     private static final int RUNE_ESSENCE = 1436;
-    public Bank(ClientContext clientContext, AirRunner r){
+    Altar altar;
+    public Bank(ClientContext clientContext, RuneCrafter r, Altar altar){
         super(clientContext, null,null);
         this.airRunner = r;
+        this.altar = altar;
     }
 
     GameObject bankBooth;
