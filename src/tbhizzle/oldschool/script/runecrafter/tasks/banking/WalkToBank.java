@@ -24,13 +24,21 @@ public class WalkToBank extends BinaryTask<ClientContext> {
     @Override
     public boolean execute() {
         if(path == null){
-            pathArray = new Tile[altar.getPathToAltar().length - 2];
-           for(int i = 0; i < altar.getPathToAltar().length - 2; i++){
-               pathArray[i] = altar.getPathToAltar()[i];
-           }
-            path = ctx.movement.newTilePath(pathArray).reverse();
+            if(altar == Altar.FIRE) {
+                pathArray = new Tile[altar.getPathToAltar().length - 6];
+                for (int i = 0; i < altar.getPathToAltar().length - 6; i++) {
+                    pathArray[i] = altar.getPathToAltar()[i];
+                    System.out.println("Tile: " + altar.getPathToAltar()[i]);
+                }
+                path = ctx.movement.newTilePath(pathArray).reverse();
+            }else{
+                path = ctx.movement.newTilePath(altar.getPathToAltar()).reverse();
+            }
         }
-        return path.traverse();
+
+        if(!path.traverse())
+            ctx.movement.step(path.next());
         //return ctx.movement.step(altar.getBankTile());
+        return true;
     }
 }

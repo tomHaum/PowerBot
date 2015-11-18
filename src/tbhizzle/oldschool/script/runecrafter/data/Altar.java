@@ -7,18 +7,18 @@ import org.powerbot.script.Tile;
  */
 public enum Altar {
     AIR(    new Tile(3012, 3356, 0),
-            new Tile(2986, 3296, 0),
+            new Tile(2986, 3294, 0),
             new Tile(2843, 4832, 0),
             14399,14897,14841, Paths.AIR
     ),
     EARTH(  new Tile(3253, 3421, 0),
-            new Tile(3303, 3470, 0),
+            new Tile(3305, 3472, 0),
             new Tile(2659, 4838, 0),
             14405,14900,14844, Paths.EARTH
 
     ),
     FIRE(   new Tile(3382, 3268, 0),
-            new Tile(3312, 3253, 0),
+            new Tile(3311, 3252, 0),
             new Tile(2583, 4841, 0),
             14407,14901,14845,Paths.FIRE
 
