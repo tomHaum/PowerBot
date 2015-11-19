@@ -270,6 +270,8 @@ public class FurnaceSmelter extends ClientAccessor<ClientContext> {
                 do{
                     primaryCount = ctx.inventory.select().id(smeltable.getPrimaryId()).count();
                     parent.log("Iron Sleeping. Iron count: " + primaryCount);
+                    if(count == 0)
+                        break;
                     Condition.sleep(sleep);
                     if(ctx.widgets.component(233, 0).visible())
                         break;
