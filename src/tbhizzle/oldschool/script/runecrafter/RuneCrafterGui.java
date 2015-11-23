@@ -89,12 +89,12 @@ public class RuneCrafterGui extends JFrame {
         gbc_rdbtnBody.gridy = 6;
         contentPane.add(rdbtnBody, gbc_rdbtnBody);
 
-        JCheckBox chckbxAbyss = new JCheckBox("Does Nothing");
-        GridBagConstraints gbc_chckbxAbyss = new GridBagConstraints();
-        gbc_chckbxAbyss.insets = new Insets(0, 0, 5, 5);
-        gbc_chckbxAbyss.gridx = 3;
-        gbc_chckbxAbyss.gridy = 6;
-        contentPane.add(chckbxAbyss, gbc_chckbxAbyss);
+        final JCheckBox chkbxPureEss = new JCheckBox("Pure Essense");
+        GridBagConstraints gbc_chkbxPureEss = new GridBagConstraints();
+        gbc_chkbxPureEss.insets = new Insets(0, 0, 5, 5);
+        gbc_chkbxPureEss.gridx = 3;
+        gbc_chkbxPureEss.gridy = 6;
+        contentPane.add(chkbxPureEss, gbc_chkbxPureEss);
 
         JButton btnStart = new JButton("Start");
         GridBagConstraints gbc_btnStart = new GridBagConstraints();
@@ -118,7 +118,9 @@ public class RuneCrafterGui extends JFrame {
                 }else{
                     return;
                 }
+
                 System.out.println(altar.name());
+                RuneCrafterGui.this.setPureEss(chkbxPureEss.isSelected());
                 RuneCrafterGui.this.setAltar(altar);
                 RuneCrafterGui.this.setVisible(false);
                 RuneCrafterGui.this.dispose();
@@ -128,6 +130,13 @@ public class RuneCrafterGui extends JFrame {
         });
 
 
+    }
+    boolean pureEss = false;
+    public void setPureEss(boolean b){
+        pureEss = b;
+    }
+    public boolean getPureEss(){
+        return pureEss;
     }
     public void setAltar(Altar a){
         this.altar = a;

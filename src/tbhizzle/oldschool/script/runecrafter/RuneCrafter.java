@@ -26,6 +26,7 @@ public class RuneCrafter extends PollingScript<ClientContext> implements PaintLi
     boolean crafted;
     int experience;
     RuneCrafterGui frame;
+    boolean usingPureEss = false;
     @Override
     public void start(){
         //root = new InventoryCheck(ctx, this, Altar.AIR);
@@ -56,6 +57,7 @@ public class RuneCrafter extends PollingScript<ClientContext> implements PaintLi
         else{
             if(frame != null && frame.getAltar() != null){
                 root = new InventoryCheck(ctx,this,frame.getAltar());
+                usingPureEss = frame.getPureEss();
             }
         }
     }
@@ -98,5 +100,8 @@ public class RuneCrafter extends PollingScript<ClientContext> implements PaintLi
     public void log(String s){
         log.info(s);
         System.out.println(s);
+    }
+    public boolean isUsingPureEss(){
+        return usingPureEss;
     }
 }

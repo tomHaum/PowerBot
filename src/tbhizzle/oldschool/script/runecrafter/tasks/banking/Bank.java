@@ -19,12 +19,13 @@ public class Bank extends BinaryTask<ClientContext> {
 
     //public static final Tile BANK_TILE = new Tile(3012, 3356, 0);
     RuneCrafter airRunner;
-    private static final int RUNE_ESSENCE = 1436;
+    private final int RUNE_ESSENCE;
     Altar altar;
     public Bank(ClientContext clientContext, RuneCrafter r, Altar altar){
         super(clientContext, null,null);
         this.airRunner = r;
         this.altar = altar;
+        RUNE_ESSENCE = (r.isUsingPureEss()? 7636 : 1436);//pure ? normal
     }
 
     Interactive bank;
