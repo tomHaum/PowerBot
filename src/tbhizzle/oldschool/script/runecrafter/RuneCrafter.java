@@ -58,6 +58,7 @@ public class RuneCrafter extends PollingScript<ClientContext> implements PaintLi
             if(frame != null && frame.getAltar() != null){
                 root = new InventoryCheck(ctx,this,frame.getAltar());
                 usingPureEss = frame.getPureEss();
+                //log("Crafter is using pure ess: " + usingPureEss);
             }
         }
     }

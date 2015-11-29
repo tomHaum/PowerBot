@@ -89,7 +89,7 @@ public class RuneCrafterGui extends JFrame {
         gbc_rdbtnBody.gridy = 6;
         contentPane.add(rdbtnBody, gbc_rdbtnBody);
 
-        final JCheckBox chkbxPureEss = new JCheckBox("Pure Essense");
+        final JCheckBox chkbxPureEss = new JCheckBox("Pure Essence");
         GridBagConstraints gbc_chkbxPureEss = new GridBagConstraints();
         gbc_chkbxPureEss.insets = new Insets(0, 0, 5, 5);
         gbc_chkbxPureEss.gridx = 3;
@@ -121,6 +121,7 @@ public class RuneCrafterGui extends JFrame {
 
                 System.out.println(altar.name());
                 RuneCrafterGui.this.setPureEss(chkbxPureEss.isSelected());
+                //runeCrafter.log("GUI is using pure ess: " + chkbxPureEss.isSelected());
                 RuneCrafterGui.this.setAltar(altar);
                 RuneCrafterGui.this.setVisible(false);
                 RuneCrafterGui.this.dispose();

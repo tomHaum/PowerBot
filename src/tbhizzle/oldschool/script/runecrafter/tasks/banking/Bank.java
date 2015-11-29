@@ -19,13 +19,13 @@ public class Bank extends BinaryTask<ClientContext> {
 
     //public static final Tile BANK_TILE = new Tile(3012, 3356, 0);
     RuneCrafter airRunner;
-    private final int RUNE_ESSENCE;
+    private int RUNE_ESSENCE = -1;
     Altar altar;
     public Bank(ClientContext clientContext, RuneCrafter r, Altar altar){
         super(clientContext, null,null);
         this.airRunner = r;
         this.altar = altar;
-        RUNE_ESSENCE = (r.isUsingPureEss()? 7636 : 1436);//pure ? normal
+
     }
 
     Interactive bank;
@@ -33,6 +33,12 @@ public class Bank extends BinaryTask<ClientContext> {
     private static final int fadliId = 3340;
     @Override
     public boolean execute() {
+        if(RUNE_ESSENCE == -1) {
+            //airRunner.log("Bank is using pure ess: " + airRunner.isUsingPureEss());
+            RUNE_ESSENCE = (airRunner.isUsingPureEss()? 7936 : 1436);//pure ? normal
+            airRunner.log("Essence ID: " + RUNE_ESSENCE);
+        }
+
         if(!ctx.movement.running())
             ctx.movement.running(true);
 
@@ -81,6 +87,7 @@ public class Bank extends BinaryTask<ClientContext> {
             }
             if(ctx.inventory.select().count() != 28){
                 if(ctx.inventory.count() > 0 )
+                    airRunner.log("Not enough essence. Quitting");
                     ctx.controller.stop();
                 return false;
             }
