@@ -42,11 +42,12 @@ public class RuneCrafterGui extends JFrame {
         GridBagConstraints gbc_textPane = new GridBagConstraints();
         gbc_textPane.gridheight = 3;
         gbc_textPane.gridwidth = 6;
-        gbc_textPane.insets = new Insets(0, 0, 5, 5);
+        gbc_textPane.insets = new Insets(0, 0, 5, 0);
         gbc_textPane.fill = GridBagConstraints.BOTH;
         gbc_textPane.gridx = 0;
         gbc_textPane.gridy = 0;
         contentPane.add(textPane, gbc_textPane);
+
         ButtonGroup altars = new ButtonGroup();
         final JRadioButton rdbtnAir = new JRadioButton("Air");
         altars.add(rdbtnAir);
@@ -89,15 +90,26 @@ public class RuneCrafterGui extends JFrame {
         gbc_rdbtnBody.gridy = 6;
         contentPane.add(rdbtnBody, gbc_rdbtnBody);
 
+        final JRadioButton rdbtnMind = new JRadioButton("Mind");
+        altars.add(rdbtnMind);
+        GridBagConstraints gbc_rdbtnMind = new GridBagConstraints();
+        gbc_rdbtnMind.anchor = GridBagConstraints.WEST;
+        gbc_rdbtnMind.gridwidth = 2;
+        gbc_rdbtnMind.insets = new Insets(0, 0, 5, 5);
+        gbc_rdbtnMind.gridx = 0;
+        gbc_rdbtnMind.gridy = 7;
+        contentPane.add(rdbtnMind, gbc_rdbtnMind);
+
         final JCheckBox chkbxPureEss = new JCheckBox("Pure Essence");
         GridBagConstraints gbc_chkbxPureEss = new GridBagConstraints();
         gbc_chkbxPureEss.insets = new Insets(0, 0, 5, 5);
         gbc_chkbxPureEss.gridx = 3;
-        gbc_chkbxPureEss.gridy = 6;
+        gbc_chkbxPureEss.gridy = 7;
         contentPane.add(chkbxPureEss, gbc_chkbxPureEss);
 
         JButton btnStart = new JButton("Start");
         GridBagConstraints gbc_btnStart = new GridBagConstraints();
+        gbc_btnStart.anchor = GridBagConstraints.WEST;
         gbc_btnStart.gridwidth = 3;
         gbc_btnStart.gridx = 3;
         gbc_btnStart.gridy = 8;
@@ -115,6 +127,8 @@ public class RuneCrafterGui extends JFrame {
                     altar = Altar.FIRE;
                 }else if (rdbtnBody.isSelected()) {
                     altar = Altar.BODY;
+                }else if(rdbtnMind.isSelected()) {
+                    altar = Altar.MIND;
                 }else{
                     return;
                 }
@@ -129,6 +143,7 @@ public class RuneCrafterGui extends JFrame {
 
             }
         });
+
 
 
     }

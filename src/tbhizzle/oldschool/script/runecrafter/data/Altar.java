@@ -1,6 +1,7 @@
 package tbhizzle.oldschool.script.runecrafter.data;
 
 import org.powerbot.script.Tile;
+import org.powerbot.script.rt4.Path;
 
 /**
  * Created by Tom on 11/16/2015.
@@ -27,6 +28,13 @@ public enum Altar {
             new Tile(3055, 3443, 0),
             new Tile(2522, 4842, 0),
             14409,14902,14846, Paths.BODY
+
+    ),
+
+    MIND(   new Tile(2946, 3369, 0),
+            new Tile(2980, 3513, 0),
+            new Tile(2787, 4839, 0),
+            14401,14898,14842, Paths.MIND
 
     );
 
