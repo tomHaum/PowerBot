@@ -28,7 +28,7 @@ public class EnterAltar extends BinaryTask<ClientContext> {
     public boolean execute() {
 
         if(airAltar == null || !airAltar.valid()){
-            airAltar = ctx.objects.select().action("Enter"). poll();
+            airAltar = ctx.objects.select().action("Enter").nearest().poll();
             //airAltar = ctx.objects.select().id(altar.getAltarEntranceId()).nearest().peek();
         }
         if(!airAltar.inViewport())
