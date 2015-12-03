@@ -10,7 +10,7 @@ public enum Altar {
     AIR(    new Tile(3012, 3356, 0),
             new Tile(2986, 3294, 0),
             new Tile(2843, 4832, 0),
-            14399,14897,14841, Paths.AIR
+            14399,14897,14841, Paths.AIR//14398
     ),
     EARTH(  new Tile(3253, 3421, 0),
             new Tile(3305, 3472, 0),

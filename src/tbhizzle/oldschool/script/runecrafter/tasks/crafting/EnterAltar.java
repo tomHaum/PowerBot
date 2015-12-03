@@ -26,8 +26,10 @@ public class EnterAltar extends BinaryTask<ClientContext> {
     GameObject airAltar;
     @Override
     public boolean execute() {
+
         if(airAltar == null || !airAltar.valid()){
-            airAltar = ctx.objects.select().id(altar.getAltarEntranceId()).nearest().peek();
+            airAltar = ctx.objects.select().action("Enter"). poll();
+            //airAltar = ctx.objects.select().id(altar.getAltarEntranceId()).nearest().peek();
         }
         if(!airAltar.inViewport())
             ctx.camera.turnTo(airAltar);
@@ -38,5 +40,8 @@ public class EnterAltar extends BinaryTask<ClientContext> {
                 return false;
         }
         return true;
+
+
+
     }
 }
