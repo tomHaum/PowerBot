@@ -2,10 +2,7 @@ package tbhizzle.oldschool.script.runecrafter.tasks.banking;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Tile;
-import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.GameObject;
-import org.powerbot.script.rt4.Interactive;
-import org.powerbot.script.rt4.Npc;
+import org.powerbot.script.rt4.*;
 import tbhizzle.oldschool.script.runecrafter.RuneCrafter;
 import tbhizzle.oldschool.script.runecrafter.data.Altar;
 import tbhizzle.util.BinaryTask;
@@ -38,15 +35,16 @@ public class Bank extends BinaryTask<ClientContext> {
             RUNE_ESSENCE = (airRunner.isUsingPureEss()? 7936 : 1436);//pure ? normal
             airRunner.log("Essence ID: " + RUNE_ESSENCE);
         }
-
+        airRunner.log("Made it Here");
         if(!ctx.movement.running())
             ctx.movement.running(true);
 
         if(bank == null || !bank.valid()){
             if(altar != Altar.FIRE)
-                bank = ctx.objects.select().name("Bank Booth").nearest().peek();
+                bank = ctx.npcs.select().action("Bank").poll();
             else
                 bank = ctx.npcs.select().id(fadliId).peek();
+            airRunner.log(bank.toString());
         }
 
 

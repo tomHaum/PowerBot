@@ -107,6 +107,34 @@ public class RuneCrafterGui extends JFrame {
         gbc_chkbxPureEss.gridy = 7;
         contentPane.add(chkbxPureEss, gbc_chkbxPureEss);
 
+
+        SpinnerNumberModel numberModel = new SpinnerNumberModel(
+                new Integer(60), // value
+                new Integer(10), // min
+                new Integer(60*6), // max
+                new Integer(15) // step
+        );
+        final JSpinner numberChooser = new JSpinner(numberModel);
+        GridBagConstraints gbc_numberChooser = new GridBagConstraints();
+        gbc_numberChooser.anchor = GridBagConstraints.WEST;
+        gbc_numberChooser.gridwidth = 2;
+        gbc_numberChooser.gridx = 3;
+        gbc_numberChooser.gridy = 6;
+        contentPane.add(numberChooser,gbc_numberChooser);
+
+        final JCheckBox setTimer = new JCheckBox("Set timer?");
+        GridBagConstraints gbc_setTimer = new GridBagConstraints();
+        gbc_setTimer.anchor = GridBagConstraints.WEST;
+        gbc_setTimer.gridwidth = 2;
+        gbc_setTimer.gridx = 2;
+        gbc_setTimer.gridy = 5;
+        contentPane.add(setTimer,gbc_setTimer);
+        setTimer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                numberChooser.setEnabled(!setTimer.isSelected());
+            }
+        });
         JButton btnStart = new JButton("Start");
         GridBagConstraints gbc_btnStart = new GridBagConstraints();
         gbc_btnStart.anchor = GridBagConstraints.WEST;

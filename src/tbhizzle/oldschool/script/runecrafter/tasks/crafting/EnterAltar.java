@@ -8,6 +8,9 @@ import tbhizzle.oldschool.script.runecrafter.data.Altar;
 import tbhizzle.util.BinaryTask;
 import tbhizzle.util.Task;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Tom on 11/15/2015.
  */
@@ -20,7 +23,7 @@ public class EnterAltar extends BinaryTask<ClientContext> {
         super(clientContext,null,null);
         this.airRunner = r;
         this.altar = altar;
-
+        List myList = new ArrayList();
     }
 
     GameObject airAltar;
