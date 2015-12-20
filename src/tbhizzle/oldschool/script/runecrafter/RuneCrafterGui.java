@@ -19,6 +19,8 @@ public class RuneCrafterGui extends JFrame {
 
     private JPanel contentPane;
     Altar altar;
+    final JCheckBox setTimer = new JCheckBox("Set timer?");
+    final JSpinner numberChooser;
 
     /**
      * Create the frame.
@@ -114,7 +116,9 @@ public class RuneCrafterGui extends JFrame {
                 new Integer(60*6), // max
                 new Integer(15) // step
         );
-        final JSpinner numberChooser = new JSpinner(numberModel);
+        numberChooser = new JSpinner(numberModel);
+        numberChooser.setEnabled(false);
+
         GridBagConstraints gbc_numberChooser = new GridBagConstraints();
         gbc_numberChooser.anchor = GridBagConstraints.WEST;
         gbc_numberChooser.gridwidth = 2;
@@ -122,7 +126,7 @@ public class RuneCrafterGui extends JFrame {
         gbc_numberChooser.gridy = 6;
         contentPane.add(numberChooser,gbc_numberChooser);
 
-        final JCheckBox setTimer = new JCheckBox("Set timer?");
+
         GridBagConstraints gbc_setTimer = new GridBagConstraints();
         gbc_setTimer.anchor = GridBagConstraints.WEST;
         gbc_setTimer.gridwidth = 2;
@@ -132,7 +136,7 @@ public class RuneCrafterGui extends JFrame {
         setTimer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                numberChooser.setEnabled(!setTimer.isSelected());
+                numberChooser.setEnabled(setTimer.isSelected());
             }
         });
         JButton btnStart = new JButton("Start");
@@ -188,5 +192,11 @@ public class RuneCrafterGui extends JFrame {
     public Altar getAltar(){
         return this.altar;
     }
-
+    public boolean isUsingTimer(){
+        return setTimer.isSelected();
+    }
+    public int getTime(){
+        System.out.println(numberChooser.getValue());
+        return Integer.parseInt(numberChooser.getValue().toString());
+    }
 }

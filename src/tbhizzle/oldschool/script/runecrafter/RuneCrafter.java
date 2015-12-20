@@ -27,6 +27,7 @@ public class RuneCrafter extends PollingScript<ClientContext> implements PaintLi
     int experience;
     RuneCrafterGui frame;
     boolean usingPureEss = false;
+    long endTime = Long.MAX_VALUE;
     @Override
     public void start(){
         //root = new InventoryCheck(ctx, this, Altar.AIR);
@@ -53,11 +54,24 @@ public class RuneCrafter extends PollingScript<ClientContext> implements PaintLi
     @Override
     public void poll() {
         if(root != null)
-            root.activate();
+            if(System.currentTimeMillis() < endTime) {
+                log("Start: " + startTime + "\nEnd:   "+ endTime);
+                root.activate();
+            }else{
+                log("Script stopped running after " + frame.getTime()  + " minutes");
+                ctx.controller.stop();
+            }
         else{
             if(frame != null && frame.getAltar() != null){
                 root = new InventoryCheck(ctx,this,frame.getAltar());
                 usingPureEss = frame.getPureEss();
+                if(frame.isUsingTimer()){
+                    log("using a break timer for " + frame.getTime() + " minutes");
+                    startTime = System.currentTimeMillis();
+                    //endTime = startTime + ((long)frame.getTime())*60000L;
+                    endTime = startTime + 60000;
+                    log("Start: " + startTime + "\nEnd:   " + endTime);
+                }
                 //log("Crafter is using pure ess: " + usingPureEss);
             }
         }
