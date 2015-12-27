@@ -1,6 +1,6 @@
 package tbhizzle.oldschool.script.smelter.tasks;
 
-import org.powerbot.bot.Con;
+
 import org.powerbot.script.*;
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.rt4.*;
