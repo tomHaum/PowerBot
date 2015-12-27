@@ -53,6 +53,7 @@ public class RuneCrafter extends PollingScript<ClientContext> implements PaintLi
     }
     @Override
     public void poll() {
+        System.out.println("Get memed on");
         if(root != null)
             if(System.currentTimeMillis() < endTime) {
                 log("Start: " + startTime + "\nEnd:   "+ endTime);
