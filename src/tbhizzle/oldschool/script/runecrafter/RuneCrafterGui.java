@@ -26,7 +26,7 @@ public class RuneCrafterGui extends JFrame {
      * Create the frame.
      */
     public RuneCrafterGui(final RuneCrafter runeCrafter, File preferences) {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 318, 300);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

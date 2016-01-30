@@ -19,11 +19,11 @@ public class WalkToBank extends BinaryTask<ClientContext> {
         this.airRunner = r;
         this.altar = altar;
     }
-    Path path;
+    Tile[] path;
     Tile[] pathArray;
     @Override
     public boolean execute() {
-        if(path == null){
+        /*if(path == null){
             if(altar == Altar.FIRE) {
                 pathArray = new Tile[altar.getPathToAltar().length - 6];
                 for (int i = 0; i < altar.getPathToAltar().length - 6; i++) {
@@ -40,5 +40,15 @@ public class WalkToBank extends BinaryTask<ClientContext> {
             ctx.movement.step(path.next());
         //return ctx.movement.step(altar.getBankTile());
         return true;
+        */
+        if(path == null){
+            path = altar.getPathToAltar();
+        }
+        for(int i = 0; i < path.length; i++){
+            if(ctx.movement.reachable(ctx.players.local().tile(), path[i])){
+                return ctx.movement.step(path[i]);
+            }
+        }
+        return false;
     }
 }
