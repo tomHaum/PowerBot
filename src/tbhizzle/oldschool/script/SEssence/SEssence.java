@@ -130,7 +130,7 @@ public class SEssence extends PollingScript<ClientContext> implements PaintListe
                 }
             }else{
                 status = "leaving mine";
-                GameObject portal = ctx.objects.select().id(7479, 7478, 7477, 7476, 7475,7474, 74723, 7472).nearest().peek();
+                GameObject portal = ctx.objects.select().id(7479, 7478, 7477, 7476, 7475,7474, 7473, 7472).nearest().peek();
 
                 if(ctx.movement.distance(portal) < 3){
 
