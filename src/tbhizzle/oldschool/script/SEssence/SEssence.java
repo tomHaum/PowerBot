@@ -62,11 +62,13 @@ public class SEssence extends PollingScript<ClientContext> implements PaintListe
                     //bank
                     status = "banking";
                     GameObject bankBooth = ctx.objects.select().name("Bank booth").nearest().peek();
-                    bankBooth.interact(true, "Bank");
-                    if(ctx.game.crosshair().compareTo(Game.Crosshair.ACTION) == 0)
-                        Condition.sleep(400);
-                    else
-                        return;
+                    if(!ctx.bank.opened()){
+                        bankBooth.interact(true, "Bank");
+                        if(ctx.game.crosshair().compareTo(Game.Crosshair.ACTION) == 0)
+                            Condition.sleep(400);
+                        else
+                            return;
+                    }
                     if(ctx.bank.opened()) {
                         ctx.bank.depositInventory();
                     }
