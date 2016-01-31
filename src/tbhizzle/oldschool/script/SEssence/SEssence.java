@@ -1,10 +1,8 @@
 package tbhizzle.oldschool.script.SEssence;
 
-import com.sun.deploy.security.AuthCacheBridge;
 import org.powerbot.script.*;
 import org.powerbot.script.rt4.*;
 import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.Interactive;
 
 import java.awt.*;
 
