@@ -138,7 +138,7 @@ public class Smelter extends PollingScript<ClientContext> implements PaintListen
         System.out.println("Banking");
         if (booth == null || !booth.valid()) {
             System.out.println("Getting new banker");
-            booth = ctx.objects.select().id(BANKBOOTHID).nearest().peek();
+            booth = ctx.objects.select().name("Bank booth").nearest().peek();
         }
         if (!ctx.bank.opened()) {
             System.out.print("Opening tab:");

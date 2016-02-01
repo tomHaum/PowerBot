@@ -3,6 +3,7 @@ package tbhizzle.oldschool.script.SEssence;
 import org.powerbot.script.*;
 import org.powerbot.script.rt4.*;
 import org.powerbot.script.rt4.ClientContext;
+import tbhizzle.oldschool.script.runecrafter.tasks.banking.ExitAltar;
 
 import java.awt.*;
 
@@ -16,6 +17,7 @@ public class SEssence extends PollingScript<ClientContext> implements PaintListe
     private int Aurbury = 637;
     private int portal = 5895;
     private String status = " nothing";
+
     @Override
     public void repaint(Graphics graphics) {
         graphics.fill3DRect(0,0,100,100,false);
@@ -29,6 +31,9 @@ public class SEssence extends PollingScript<ClientContext> implements PaintListe
         if(ctx.players.local().tile().floor() == 1){
             ctx.objects.select().id(11793).nearest().peek().click();
             return;
+        }
+        if(ctx.game.tab().compareTo(Game.Tab.INVENTORY) != 0){
+            ctx.game.tab(Game.Tab.INVENTORY);
         }
         if(ctx.players.local().tile().x() < 4000){//in the over world
             if(ctx.inventory.select().count() < 28){//walk to aurbury if inventory is not  full
@@ -104,7 +109,7 @@ public class SEssence extends PollingScript<ClientContext> implements PaintListe
                             status = "mining...";
                             while (true) {
                                 miningXP = ctx.skills.experience(Constants.SKILLS_MINING);
-
+                                ctx.game.tab(Game.Tab.INVENTORY);
                                 if (ctx.inventory.select().count() == 28)
                                     break;
                                 count = 20;
@@ -133,31 +138,41 @@ public class SEssence extends PollingScript<ClientContext> implements PaintListe
                 GameObject portal = ctx.objects.select().id(7479, 7478, 7477, 7476, 7475,7474, 7473, 7472).nearest().peek();
 
                 if(ctx.movement.distance(portal) < 3){
-
-
-                        portal.click(false);
-                        ctx.menu.click(new Filter<MenuCommand>() {
-                            @Override
-                            public boolean accept(MenuCommand menuCommand) {
-                                System.out.println( menuCommand.action + ":" + menuCommand.option);
-                                return menuCommand.action.compareTo("Use") == 0 || menuCommand.action.compareTo("Exit") == 0;
-                            }
-                        });
-                        if(ctx.game.crosshair().compareTo(Game.Crosshair.ACTION) == 0){
-                            status = "successfully clicked portal";
-                            int count = 10;
-                            while(count-- > 0 && ctx.players.local().inMotion()){
-                                try{
-                                    Thread.sleep(200);
-                                }catch(Exception e){
-                                    e.printStackTrace();
-                                }
-                            }
-
-                        }else{
-                            status += " turing to portal";
-                            ctx.camera.turnTo(portal);
+                    if(!portal.inViewport())
+                        ctx.camera.turnTo(portal);
+                    portal.click(false);
+                    int count = 10;
+                    while(!ctx.menu.opened() && count-- > 0){
+                        try{
+                            Thread.sleep(50);
+                        }catch(Exception e){
+                            e.printStackTrace();
                         }
+                    }
+                    if(!ctx.menu.opened())
+                        return;
+                    ctx.menu.click(new Filter<MenuCommand>() {
+                        @Override
+                        public boolean accept(MenuCommand menuCommand) {
+                            System.out.println( menuCommand.action + ":" + menuCommand.option);
+                            return menuCommand.action.compareTo("Use") == 0 || menuCommand.action.compareTo("Exit") == 0;
+                        }
+                    });
+                    if(ctx.game.crosshair().compareTo(Game.Crosshair.ACTION) == 0){
+                        status = "successfully clicked portal";
+                        count = 10;
+                        while(count-- > 0 && ctx.players.local().inMotion()){
+                            try{
+                                Thread.sleep(200);
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }else{
+                        status += " turing to portal";
+                        ctx.camera.turnTo(portal);
+                    }
                 }else{
                     ctx.movement.step(portal);
                 }
