@@ -44,11 +44,14 @@ public class WalkToBank extends BinaryTask<ClientContext> {
         if(path == null){
             path = altar.getPathToAltar();
         }
+        System.out.println();
         for(int i = 0; i < path.length; i++){
-            if(ctx.movement.reachable(ctx.players.local().tile(), path[i])){
+            System.out.print(path[i].x()+":"+path[i].y()+";");
+            if(ctx.players.local().tile().distanceTo(path[i]) < 10){
                 return ctx.movement.step(path[i]);
             }
         }
+        ctx.movement.step(path[path.length]);
         return false;
     }
 }
