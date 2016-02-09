@@ -48,7 +48,10 @@ public class WalkToBank extends BinaryTask<ClientContext> {
         for(int i = 0; i < path.length; i++){
             System.out.print(path[i].x()+":"+path[i].y()+";");
             if(ctx.players.local().tile().distanceTo(path[i]) < 10){
-                return ctx.movement.step(path[i]);
+                if(ctx.movement.destination().distanceTo(path[i]) > 2)
+                    return ctx.movement.step(path[i]);
+                else
+                    return true;
             }
         }
         ctx.movement.step(path[path.length]);
