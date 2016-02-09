@@ -25,7 +25,7 @@ public class WalkToAltar extends BinaryTask<ClientContext> {
             path = altar.getPathToAltar();
         }
         for(int i = 0; i < path.length; i++){
-            if(ctx.players.local().tile().distanceTo(path[path.length-1-i]) < 5){
+            if(ctx.players.local().tile().distanceTo(path[path.length-1-i]) < 10){
                 System.out.print(path[path.length-1-i].x() + ":" + path[path.length-1-i].y() + ";");
                 return ctx.movement.step(path[path.length-i-1]);
             }
