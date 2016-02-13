@@ -15,7 +15,7 @@ import tbhizzle.rt6.cowkiller.gui.*;
 import tbhizzle.rt6.cowkiller.tasks.*;
 import tbhizzle.util.Task;
 
-@Script.Manifest(name = "Cow Killer", description = "Kills cows and collects hides", properties="topic=1301927;game=6;")
+@Script.Manifest(name = "Cow Killer", description = "Kills cows and collects hides", properties="topic=1301927;game=6;hidden=true")
 public class CowKiller extends PollingScript<ClientContext> implements PaintListener{
 	public static boolean banking;
 	List<Task<ClientContext>> tasks = new ArrayList<Task<ClientContext>>();
