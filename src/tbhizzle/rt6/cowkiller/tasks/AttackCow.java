@@ -1,5 +1,6 @@
 package tbhizzle.rt6.cowkiller.tasks;
 
+import java.util.Comparator;
 import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
@@ -19,19 +20,6 @@ import tbhizzle.util.Task;
 public class AttackCow extends Task<ClientContext>{
 	public static final Tile cowTile = new Tile(2885, 3487,0);
 	
-	private Npc cow;
-	
-	private final Filter<Npc> cowFilter = new Filter<Npc>(){
-		@Override
-		public boolean accept(Npc npc) {
-			return AttackCow.cowTile.distanceTo(npc) < 7//within 7 tiles of the cow tile
-					&& npc.animation() != 23566//is not dying
-					&& !npc.inCombat()
-					&& npc.name().equals("Cow")
-					&& ctx.backpack.select().count() < 28;
-		}	
-	};
-
 	public AttackCow(ClientContext ctx) {
 		super(ctx);
 	}
@@ -49,15 +37,38 @@ public class AttackCow extends Task<ClientContext>{
 
 	@Override
 	public void execute() {
-		System.out.println("Attacking cows");
-		//if there is no cow selected
-		if(cow == null || !ctx.npcs.select().select(cowFilter).contains(cow)){
-			System.out.println("finding new cow");
-			cow = ctx.npcs.select().select(cowFilter).nearest().limit(2).shuffle().poll();
+		Npc cow;
+		if(ctx.players.local().interacting().valid()){
+			Condition.wait(new Callable<Boolean>() {
+				int hp = ctx.players.local().interacting().healthPercent();
+				@Override
+				public Boolean call() throws Exception {
+					return ctx.players.local().interacting().healthPercent() != hp;
+				}
+			}, 200, 10);//waits until the hp changed
 		}
-		
-		ctx.camera.turnTo(cow, 10);
-		
+		if(ctx.npcs.select().select(new Filter<Npc>() {
+			@Override
+			public boolean accept(Npc npc) {
+				return npc.interacting() == ctx.players.local();
+			}
+		}).isEmpty())
+			ctx.npcs.select().name("Cow").select(new Filter<Npc>() {
+				@Override
+				public boolean accept(Npc npc) {
+					return AttackCows.centerTile.distanceTo(npc) < 7 && !npc.inCombat();
+				}
+			});
+		cow = ctx.npcs.sort(new Comparator<Npc>() {
+			@Override
+			public int compare(Npc o1, Npc o2) {
+				return Double.compare(ctx.players.local().tile().distanceTo(o1), ctx.players.local().tile().distanceTo(o2));
+		}
+		}).limit(3).shuffle().peek();
+
+		if(!cow.inViewport()){
+			ctx.camera.turnTo(cow,10);
+		}
 		interact(cow, "Attack");
 		
 	}
@@ -78,7 +89,7 @@ public class AttackCow extends Task<ClientContext>{
                 return Condition.wait(new Callable<Boolean>() {
                     @Override
                     public Boolean call() throws Exception{
-                    	return !ctx.npcs.select().select(cowFilter).contains(cow);
+                    	return ctx.players.local().tile().distanceTo(ctx.players.local().interacting()) < 3;
                     }
                 }, 250, 10);
             }

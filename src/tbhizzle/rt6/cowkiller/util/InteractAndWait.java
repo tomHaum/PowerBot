@@ -41,7 +41,7 @@ public abstract class InteractAndWait<T extends Interactive & Locatable & Identi
         target = findTarget();
         if(target != null){
             System.out.println("target not null");
-
+            //todo make this more generic
             interact(target,"Attack");
 //            if(interact(target,action))
 //                Condition.wait(new Callable<Boolean>() {

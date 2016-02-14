@@ -42,13 +42,14 @@ public class Bank extends Task<ClientContext>{
 				int items = ctx.backpack.select().id(finalMyItem.getId()).count();
 				ctx.bank.deposit(finalMyItem.getId(), org.powerbot.script.rt6.Bank.Amount.ALL);
 
-				Condition.wait(new Callable<Boolean>() {
+				if(!Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
 						System.out.println("Waiting to bank");
-						return ctx.backpack.select().count() == 28;
+						return ctx.backpack.select().count() != 28;
 					}
-				}, 250, 5);
+				}, 250, 5))
+					return;
 				paint.banked += items - ctx.backpack.select().id(finalMyItem.getId()).count();
 				ctx.bank.close();
 			}
