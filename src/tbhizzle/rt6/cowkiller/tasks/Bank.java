@@ -41,7 +41,7 @@ public class Bank extends Task<ClientContext>{
 			if(ctx.bank.opened()){
 				int items = ctx.backpack.select().id(finalMyItem.getId()).count();
 				ctx.bank.deposit(finalMyItem.getId(), org.powerbot.script.rt6.Bank.Amount.ALL);
-
+				//todo: fix paint not working for items banked
 				if(!Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {

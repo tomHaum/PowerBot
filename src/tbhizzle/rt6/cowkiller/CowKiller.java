@@ -34,6 +34,9 @@ public class CowKiller extends PollingScript<ClientContext> implements PaintList
 	@Override
 	public void poll() {
 		if (runScript) {
+			if(ctx.widgets.component(1622,8).component(1).valid()){
+				ctx.widgets.component(1622,8).component(1).click();
+			}
 			for (Task task : tasks) {
 
 				if (task.activate()) {
